@@ -24,7 +24,7 @@ const ProfileScreen = () => {
   const clearAndRedirect = () => {
     setUser({ countryCode: "", pronoun: "", id: "" });
 
-    navigate("Begin");
+    navigate("Home");
   };
   return (
     <ScreenLayout justifyContent="justify-start">

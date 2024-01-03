@@ -65,7 +65,7 @@ const SIZE_STYLE: Record<ButtonSizeValues, string> = {
 };
 
 const TEXT_COLOR: Record<ButtonVariantValues, string> = {
-  PRIMARY: "text-white",
+  PRIMARY: "text-black",
   SECONDARY: "text-primary",
   OUTLINED: "text-primary",
   TEXT: "text-black",

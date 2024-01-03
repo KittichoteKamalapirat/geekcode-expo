@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "geekcode",
-    "slug": "geek-code",
+    "slug": "geekcode",
     "version": "2.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,7 +9,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -18,12 +18,12 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#000000"
       },
-      "package": "com.kittishane.geek-code"
+      "package": "com.kittishane.geekcode"
     },
     "androidStatusBar": {
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "web": {
       "favicon": "./assets/favicon.ico"
@@ -31,7 +31,7 @@
     "extra": {
       "USE_DOT_ENV_INSTEAD": "No",
       "eas": {
-        "projectId": "591aa60c-62e1-4171-b79d-1d3af5fff1f7"
+        "projectId": "ff101737-bb46-4e2a-8f2c-0ade18847104"
       }
     },
     "plugins": [
@@ -46,7 +46,7 @@
     ],
     "owner": "kittishane",
     "ios": {
-      "bundleIdentifier": "com.kittishane.geek-code"
+      "bundleIdentifier": "com.kittishane.geekcode"
     }
   }
 }

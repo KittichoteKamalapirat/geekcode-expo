@@ -7,17 +7,12 @@ import { cn } from "../lib/tailwind";
 
 const HomeScreen = () => {
   return (
-    <SafeAreaView style={cn`h-full bg-cream flex`}>
-      <View
-        style={cn(
-          "bg-primary w-[600px] -left-[50px] h-[600px] -top-[100px] absolute rounded-full"
-        )}
-      />
+    <SafeAreaView style={cn`h-full bg-black flex`}>
+      <View />
       <View style={cn("mt-4")}>
         <MyText className="text-white text-center text-xl">
-          Begin your language
+          Practice DSA everyday
         </MyText>
-        <MyText className="text-white text-center text-xl">journey now.</MyText>
       </View>
 
       {/* Lessons */}

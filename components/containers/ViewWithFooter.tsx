@@ -15,7 +15,7 @@ const ViewWithFooter = ({ children, footer, className }: Props) => {
       >
         <View>{children}</View>
       </ScrollView>
-      <View style={cn("mb-8")}>{footer}</View>
+      <View style={cn("mb-4")}>{footer}</View>
     </SafeAreaView>
   );
 };

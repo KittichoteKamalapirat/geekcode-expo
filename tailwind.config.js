@@ -157,7 +157,7 @@ module.exports = {
           DEFAULT: "#FFF1CF",
         },
         foreground: {
-          DEFAULT: "#6F3D22",
+          DEFAULT: "white",
         },
         grey: {
           0: grey0,
@@ -172,8 +172,8 @@ module.exports = {
 
         white: "#ffffff",
         black: "#000",
-        primary: primaryColor,
-        secondary: secondaryColor,
+        primary: "white",
+        secondary: "black",
         "secondary-hovered": secondaryHoveredColor,
         "primary-hovered": primaryHoveredColor,
         "bg-color": bgColor,

@@ -5,8 +5,8 @@ import {
   IOSOutputFormat,
 } from "expo-av/build/Audio";
 
-export const BRAND_NAME = "Learn Just Enough";
-export const BRAND_ONE_LINER = "Brand One Liner";
+export const BRAND_NAME = "GeekCode";
+export const BRAND_ONE_LINER = "Crack coding interviews with confidence";
 
 export const DAY_FORMAT = "MMM DD,YYYY";
 // have to be constants so it shows in binary, otherwise fail apple's review
