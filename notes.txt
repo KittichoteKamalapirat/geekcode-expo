@@ -1,0 +1,6 @@
+@gorhom/bottom-sheet have the following dependencies (error if not installed)
+have to be installed with expo, if yarn => error due to duplicate package
+expo uses react-native-gesture-handler
+if install by yarnagain, it gets confused
+- react-native-gesture-handler (actually no need to install since expo includes it). If duplicate => error
+- react-native-reanimated

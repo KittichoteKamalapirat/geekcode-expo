@@ -1,0 +1,22 @@
+query Lesson($id: String!) {
+  lesson(id: $id) {
+    id
+    title
+    description
+    tabName
+    isComplete
+    userId
+    messages {
+      id
+      order
+      role
+      lang
+      pronoun
+      isStatic
+      content
+      aud {
+        url
+      }
+    }
+  }
+}

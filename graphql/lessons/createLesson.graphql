@@ -1,0 +1,10 @@
+mutation CreateLesson($input: CreateLessonGqlInput!) {
+  createLesson(input: $input) {
+    lesson {
+      id
+    }
+    errors {
+      message
+    }
+  }
+}

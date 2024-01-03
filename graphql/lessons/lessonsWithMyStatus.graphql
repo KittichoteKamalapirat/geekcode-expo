@@ -1,0 +1,10 @@
+query LessonsWithMyStatus($userId: String!) {
+  lessonsWithMyStatus(userId: $userId) {
+    id
+    title
+    description
+    tab
+    isCreated
+    isComplete
+  }
+}

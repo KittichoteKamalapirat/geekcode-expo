@@ -1,0 +1,9 @@
+mutation Logout {
+  logout {
+    value
+    errors {
+      field
+      message
+    }
+  }
+}

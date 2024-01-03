@@ -1,0 +1,8 @@
+mutation DeleteUser {
+  deleteUser {
+    value
+    errors {
+      field
+    }
+  }
+}
