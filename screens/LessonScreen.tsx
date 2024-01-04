@@ -1,4 +1,4 @@
-import { Dimensions, FlatList, ScrollView, View } from "react-native";
+import { Dimensions, FlatList, ScrollView, View, Text } from "react-native";
 
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -16,6 +16,8 @@ import ViewWithFooter from "../components/containers/ViewWithFooter";
 import { LocalStorage } from "../lib/localStorage";
 import { useStore } from "../lib/store";
 import { cn } from "../lib/tailwind";
+import Word from "../components/FlashCard/FlashCard";
+import FlashCard from "../components/FlashCard/FlashCard";
 
 const SCROLL_OFFSET_MESSAGE_NUM = 3;
 
@@ -205,6 +207,8 @@ type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Lesson">;
 const LessonScreen = () => {
   const { navigate } = useNavigation<NavigationProp>();
 
+  const screenW = Dimensions.get("window").width;
+  const screenH = Dimensions.get("window").height;
   const flatListRef = useRef<FlatList>(null);
   const [lessonIsComplete, setLessonIsComplete] = useState<boolean>(false);
 
@@ -243,44 +247,70 @@ const LessonScreen = () => {
       }
     >
       <View style={cn("bg-secondary w-full h-[400px] -top-[100px] absolute")} />
-      <Container>
-        <MyText className="text-2xl text-white mt-4">
-          {lesson?.overview.title}
-        </MyText>
-        <View
-          style={{
-            flex: 1,
-            height: height * 0.6,
-          }}
+
+      <MyText className="text-2xl text-white mt-4">
+        {lesson?.overview.title}
+      </MyText>
+      <View
+        style={{
+          flex: 1,
+          height: height * 0.6,
+        }}
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
         >
-          <ScrollView
-            contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
-          >
-            <View style={cn("bg-white rounded-lg p-4")}>
-              <MyText>{lesson?.description}</MyText>
-            </View>
-          </ScrollView>
-          <FlatList
-            style={cn("bg-white rounded-lg mt-4")}
-            data={lesson?.drills as Drill[]}
-            contentContainerStyle={{ flexGrow: 1, padding: 16 }}
-            // initialScrollIndex={currAudioIndex}
-            ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
-            keyExtractor={(item, index) => item.id}
-            ref={flatListRef}
-            renderItem={({ item, index }) => {
-              return (
-                <View>
-                  <MyText className="font-semibold">
-                    {index + 1}. {item.question}
-                  </MyText>
-                  <MyText>{item.answer}</MyText>
-                </View>
-              );
-            }}
-          />
-        </View>
-      </Container>
+          <View style={cn("bg-white rounded-lg p-4")}>
+            <MyText>{lesson?.description}</MyText>
+          </View>
+        </ScrollView>
+
+        <FlatList
+          style={{
+            height: height * 0.5,
+            backgroundColor: "red",
+          }}
+          data={lesson?.drills as Drill[]}
+          contentContainerStyle={{ flexGrow: 1 }}
+          snapToAlignment="start"
+          decelerationRate="fast"
+          snapToInterval={screenW}
+          // initialScrollIndex={currAudioIndex}
+          horizontal
+          ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+          keyExtractor={(item, index) => item.id}
+          ref={flatListRef}
+          renderItem={({ item, index }) => {
+            return (
+              <FlashCard
+                front={`${index + 1}.${item.question}`}
+                back={item.answer}
+              />
+              // <View
+              //   style={{
+              //     width: screenW,
+              //     paddingTop: 16,
+              //     alignItems: "center",
+              //     display: "flex",
+              //     flexDirection: "column",
+              //   }}
+              // >
+              //   <Text
+              //     style={{
+              //       width: screenW - 20,
+              //       // margin: "auto",
+              //       backgroundColor: "white",
+              //       // resizeMode: "contain",
+              //     }}
+              //   >
+
+              //     xx
+              //   </Text>
+              // </View>
+            );
+          }}
+        />
+      </View>
     </ViewWithFooter>
   );
 };

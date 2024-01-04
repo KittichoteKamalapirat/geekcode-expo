@@ -7,9 +7,15 @@ import { useStore } from "../../lib/store";
 import { cn } from "../../lib/tailwind";
 import { HomeStackParamList } from "../../navigations/HomeStackScreen";
 import MyText from "../MyTexts/MyText";
+import clsx from "clsx";
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Register">;
 
+const levelColors = {
+  easy: "bg-teal-50 text-teal-600",
+  medium: "bg-amber-50 text-amber-600",
+  hard: "bg-rose-50 text-rose-500",
+};
 export type Level = "easy" | "medium" | "hard";
 export type LessonOverview = {
   slug: string;
@@ -56,15 +62,19 @@ const LessonList = () => {
   return (
     <View style={{ height: height * 0.7 }}>
       <FlatList
-        style={cn("bg-black rounded-lg p-4 mt-4")}
+        style={cn("bg-neutral-900 mt-2")}
         data={lessons}
         keyExtractor={(item, index) => `${item.title}-${index}`}
-        ItemSeparatorComponent={() => <View style={{ height: 32 }} />}
+        ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         ListFooterComponent={<View style={{ height: 20 }} />} // so the last item displayed fully
         renderItem={({ item }) => {
           return (
             <TouchableOpacity onPress={() => handleNavigate(item.slug)}>
-              <View style={cn("flex flex-row justify-between")}>
+              <View
+                style={cn(
+                  "flex flex-row justify-between bg-neutral-800 p-4 rounded-lg"
+                )}
+              >
                 {item.isComplete && (
                   <View
                     style={cn(
@@ -76,9 +86,22 @@ const LessonList = () => {
                 <MyText className="text-foreground font-bold">
                   {item.title}
                 </MyText>
-                <MyText className="text-foreground text-sm">
-                  {item.level}
-                </MyText>
+
+                <View
+                  style={cn(
+                    "px-2 py-[2px] rounded-full",
+                    levelColors[item.level]
+                  )}
+                >
+                  <MyText
+                    className={clsx(
+                      levelColors[item.level],
+                      "text-xs font-semibold"
+                    )}
+                  >
+                    {item.level}
+                  </MyText>
+                </View>
               </View>
             </TouchableOpacity>
           );

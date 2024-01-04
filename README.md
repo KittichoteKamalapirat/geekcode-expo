@@ -21,5 +21,4 @@ Contact Us If you have any questions or concerns about this Privacy Policy, plea
 
 By using the App, you acknowledge that you have read and understood this Privacy Policy and agree to the collection, use, and disclosure of your personal information as described herein.
 
-Contact Us
 If you have any questions about this Privacy Policy, You can contact us:
