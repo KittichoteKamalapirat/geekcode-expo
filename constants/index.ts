@@ -22,40 +22,4 @@ export const PAUSE_LABEL = "pause";
 
 export const ICON_SIZE = 24;
 
-export const recordingOptions = {
-  isMeteringEnabled: true,
-  android: {
-    extension: ".m4a",
-    outputFormat: AndroidOutputFormat.MPEG_4,
-    audioEncoder: AndroidAudioEncoder.AAC,
-    sampleRate: 44100,
-    numberOfChannels: 2,
-    bitRate: 128000,
-  },
-  ios: {
-    // . wav => wrong format header in Buffer
-    // extension: ".wav",
-    // outputFormat: IOSOutputFormat.LINEARPCM,
-    // audioQuality: IOSAudioQuality.LOW,
-    // sampleRate: 44100,
-    // numberOfChannels: 2,
-    // bitRate: 128000,
-    // linearPCMBitDepth: 16,
-    // linearPCMIsBigEndian: false,
-    // linearPCMIsFloat: false,
-
-    extension: ".m4a",
-    outputFormat: IOSOutputFormat.MPEG4AAC,
-    audioQuality: IOSAudioQuality.MAX,
-    sampleRate: 44100,
-    numberOfChannels: 2,
-    bitRate: 128000,
-    linearPCMBitDepth: 16,
-    linearPCMIsBigEndian: false,
-    linearPCMIsFloat: false,
-  },
-  web: {
-    mimeType: "audio/webm",
-    bitsPerSecond: 128000,
-  },
-};
+export const FLASHCARD_MARGIN = 20;

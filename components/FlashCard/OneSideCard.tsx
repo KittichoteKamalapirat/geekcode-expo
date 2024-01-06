@@ -1,7 +1,7 @@
 import React from "react";
-import { Card, Title } from "react-native-paper";
-import { cn } from "../../lib/tailwind";
-import { Dimensions } from "react-native";
+import { Dimensions, TouchableOpacity, View } from "react-native";
+import { FLASHCARD_MARGIN } from "../../constants";
+import MyText from "../MyTexts/MyText";
 
 type Props = {
   title: string;
@@ -13,21 +13,24 @@ const OneSideCard: React.FC<Props> = ({ title, onPress }) => {
   const screenH = Dimensions.get("window").height;
 
   return (
-    <Card
-      onPress={onPress}
-      style={{
-        width: screenW,
-        height: screenH / 3,
-        paddingTop: 16,
-        alignItems: "center",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <Card.Content>
-        <Title>{title}</Title>
-      </Card.Content>
-    </Card>
+    <TouchableOpacity onPress={onPress}>
+      <View
+        style={{
+          width: screenW - FLASHCARD_MARGIN * 2,
+          height: screenH * 0.7,
+          marginVertical: "auto",
+          paddingTop: 16,
+          paddingHorizontal: 8,
+          alignItems: "center",
+          display: "flex",
+          flexDirection: "column",
+          backgroundColor: "black",
+          borderRadius: 12,
+        }}
+      >
+        <MyText>{title}</MyText>
+      </View>
+    </TouchableOpacity>
   );
 };
 

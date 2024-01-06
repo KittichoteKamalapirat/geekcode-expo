@@ -49,7 +49,7 @@ const FlashCard = ({ front, back }: Props) => {
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <View>
+      <View style={cn("xxxxx")}>
         <Animated.View style={[styles.hidden, rotateFront]}>
           <OneSideCard title={front} onPress={doAFlip} />
         </Animated.View>
@@ -64,8 +64,9 @@ const FlashCard = ({ front, back }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "space-evenly",
+    // marginTop: 10,
+    // alignItems: "center",
     width: "100%",
   },
   hidden: {

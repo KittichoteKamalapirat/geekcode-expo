@@ -1,45 +1,57 @@
-import { Dimensions, ScrollView, View } from "react-native";
-
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import MyText from "../components/MyTexts/MyText";
-
-import { HomeStackParamList } from "../navigations/HomeStackScreen";
-
-import Button from "../components/Buttons/Button";
-import { LessonOverview } from "../components/LessonList/LessonList";
-import ViewWithFooter from "../components/containers/ViewWithFooter";
-import { useStore } from "../lib/store";
-import { cn } from "../lib/tailwind";
-
-const SCROLL_OFFSET_MESSAGE_NUM = 3;
-
-type Drill = {
+export type Drill = {
   question: string;
   answer: string;
 };
 
-type Lesson = {
+export type Lesson = {
   overview: LessonOverview;
   description: string;
   drills: Drill[];
 };
 
-const lessons: Lesson[] = [
+export type Level = "easy" | "medium" | "hard";
+
+export type LessonOverview = {
+  slug: string;
+  title: string;
+  level: Level;
+};
+
+export const lessonOverviews: LessonOverview[] = [
   {
-    overview: {
-      slug: "two_sum",
-      title: "Two Sum",
-      level: "easy",
-      isComplete: false,
-    },
+    slug: "two_sum",
+    title: "Two Sum",
+    level: "easy",
+  },
+  {
+    slug: "contains_duplicate",
+    title: "Contains Duplicate",
+    level: "easy",
+  },
+  {
+    slug: "valid_sudoku",
+    title: "Valid Sudoku",
+    level: "medium",
+  },
+  {
+    slug: "minimum_window_substring",
+    title: "Minimum Window Substring",
+    level: "hard",
+  },
+];
+
+export const lessons: Lesson[] = [
+  {
+    overview: lessonOverviews.find(
+      (overview) => overview.slug === "two_sum"
+    ) as LessonOverview,
     description: `Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
-    You may assume that each input would have exactly one solution, and you may not use the same element twice.
-    You can return the answer in any order.
-    Example 1:
-    Input: nums = [2,7,11,15], target = 9
-    Output: [0,1]
-    Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].`,
+      You may assume that each input would have exactly one solution, and you may not use the same element twice.
+      You can return the answer in any order.
+      Example 1:
+      Input: nums = [2,7,11,15], target = 9
+      Output: [0,1]
+      Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].`,
     drills: [
       {
         question: "What is a brute force solution?",
@@ -67,20 +79,17 @@ const lessons: Lesson[] = [
     ],
   },
   {
-    overview: {
-      slug: "contains_duplicate",
-      title: "Contains Duplicate",
-      level: "easy",
-      isComplete: false,
-    },
+    overview: lessonOverviews.find(
+      (overview) => overview.slug === "contains_duplicate"
+    ) as LessonOverview,
     description: `Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.
-    Example 1:
-    Input: nums = [1,2,3,1]
-    Output: true
-    Copy
-    Example 2:
-    Input: nums = [1,2,3,4]
-    Output: false`,
+      Example 1:
+      Input: nums = [1,2,3,1]
+      Output: true
+      Copy
+      Example 2:
+      Input: nums = [1,2,3,4]
+      Output: false`,
     drills: [
       {
         question:
@@ -105,19 +114,16 @@ const lessons: Lesson[] = [
     ],
   },
   {
-    overview: {
-      slug: "valid_sudoku",
-      title: "Valid Sudoku",
-      level: "medium",
-      isComplete: false,
-    },
+    overview: lessonOverviews.find(
+      (overview) => overview.slug === "valid_sudoku"
+    ) as LessonOverview,
     description: `Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
-    Each row must contain the digits 1-9 without repetition.
-    Each column must contain the digits 1-9 without repetition.
-    Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
-    Note:
-    A Sudoku board (partially filled) could be valid but is not necessarily solvable.
-    Only the filled cells need to be validated according to the mentioned rules.`,
+      Each row must contain the digits 1-9 without repetition.
+      Each column must contain the digits 1-9 without repetition.
+      Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+      Note:
+      A Sudoku board (partially filled) could be valid but is not necessarily solvable.
+      Only the filled cells need to be validated according to the mentioned rules.`,
     drills: [
       {
         question: "What should be our approach to solve this problem?",
@@ -147,29 +153,26 @@ const lessons: Lesson[] = [
     ],
   },
   {
-    overview: {
-      slug: "minimum_windom_substring",
-      title: "Minimum Window Substring",
-      level: "hard",
-      isComplete: false,
-    },
+    overview: lessonOverviews.find(
+      (overview) => overview.slug === "minimum_window_substring"
+    ) as LessonOverview,
     description: `Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string "".
-    The testcases will be generated such that the answer is unique.
-    Example 1:
-    Input: s = "ADOBECODEBANC", t = "ABC"
-    Output: "BANC"
-    Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t.
-    Copy
-    Example 2:
-    Input: s = "a", t = "a"
-    Output: "a"
-    Explanation: The entire string s is the minimum window.
-    Copy
-    Example 3:
-    Input: s = "a", t = "aa"
-    Output: ""
-    Explanation: Both 'a's from t must be included in the window.
-    Since the largest window of s only has one 'a', return empty string.`,
+      The testcases will be generated such that the answer is unique.
+      Example 1:
+      Input: s = "ADOBECODEBANC", t = "ABC"
+      Output: "BANC"
+      Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t.
+      Copy
+      Example 2:
+      Input: s = "a", t = "a"
+      Output: "a"
+      Explanation: The entire string s is the minimum window.
+      Copy
+      Example 3:
+      Input: s = "a", t = "aa"
+      Output: ""
+      Explanation: Both 'a's from t must be included in the window.
+      Since the largest window of s only has one 'a', return empty string.`,
     drills: [
       {
         question: "What is a brute force solution?",
@@ -194,56 +197,3 @@ const lessons: Lesson[] = [
     ],
   },
 ];
-
-type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Lesson">;
-
-const LessonScreen = () => {
-  const { navigate } = useNavigation<NavigationProp>();
-
-  const route: RouteProp<{ params: { sheetTab: string; id: string } }> =
-    useRoute();
-  const { set: setAction, completedLessons } = useStore(
-    (state) => state.action
-  );
-
-  const lessonId = route.params.id;
-
-  const { height } = Dimensions.get("window");
-
-  const handleStudy = () => {
-    navigate("StudyQuestion", { id: lessonId });
-  };
-
-  const lesson = lessons.find((lesson) => lesson.overview.slug === lessonId);
-
-  return (
-    <ViewWithFooter
-      className="h-full bg-black"
-      footer={
-        <View style={cn("flex flex-row items-center gap-4 mx-auto mt-4")}>
-          <Button onPress={handleStudy} label="Study" className="w-full" />
-        </View>
-      }
-    >
-      <MyText className="text-2xl text-white mt-2">
-        {lesson?.overview.title}
-      </MyText>
-      <View
-        style={{
-          flex: 1,
-          height: height * 0.6,
-        }}
-      >
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
-        >
-          <View style={cn("rounded-lg p-4")}>
-            <MyText>{lesson?.description}</MyText>
-          </View>
-        </ScrollView>
-      </View>
-    </ViewWithFooter>
-  );
-};
-
-export default LessonScreen;

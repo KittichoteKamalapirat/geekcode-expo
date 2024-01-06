@@ -16,6 +16,7 @@ const TabNavigator = ({ routeName }: Props) => {
     routeName === "Login" ||
     routeName === "Lessons" ||
     routeName === "Lesson" ||
+    routeName === "StudyQuestion" ||
     routeName === "Profile" ||
     routeName === "Home" ||
     routeName === "Register"; // hide if onboarding

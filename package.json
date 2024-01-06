@@ -76,6 +76,7 @@
     "react-native-video": "^5.2.1",
     "react-native-web": "~0.19.6",
     "react-navigation": "^4.4.4",
+    "supermemo": "^2.0.17",
     "tailwind-merge": "^2.0.0",
     "twrnc": "^3.6.0",
     "zustand": "^4.4.6"

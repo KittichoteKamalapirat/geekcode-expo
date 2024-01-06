@@ -1,4 +1,3 @@
-import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import {
   NativeStackNavigationProp,
@@ -7,11 +6,11 @@ import {
 
 import { HomeScreen, LoginScreen, RegisterScreen } from "../screens";
 import LessonScreen from "../screens/LessonScreen";
-import { headerBgColor, headerTextColor, secondaryColor } from "../theme/style";
+import ProfileScreen from "../screens/ProfileScreen";
+import StudyQuestionScreen from "../screens/StudyQuestionScreen";
+import { headerBgColor, headerTextColor } from "../theme/style";
 import { ObjectValues } from "../types";
 import { useIsFirstLaunch } from "../util/useIsFirstLaunch";
-import IconButton from "../components/Buttons/IconButton";
-import ProfileScreen from "../screens/ProfileScreen";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -22,6 +21,7 @@ const HOME_STACK_SCREENS = {
   LOGIN: "Login",
   REGISTER: "Register",
   ONBOARDING: "Onboarding",
+  STUDY_QUESTION: "StudyQuestion",
   // LESSONS: "Lessons",
 } as const;
 
@@ -33,6 +33,7 @@ export type HomeStackParamList = {
   Profile: undefined;
 
   Lesson: { id: string };
+  StudyQuestion: undefined; // get slug from global store
   Lessons: undefined;
 
   Login: undefined | { next?: HomeStackScreens };
@@ -79,6 +80,7 @@ const HomeStackScreen = () => {
         component={HomeScreen}
         options={{
           headerTitleAlign: "left",
+          headerShown: false,
           headerTitle: "Home",
           headerTintColor: "white",
           headerBackVisible: false,
@@ -115,6 +117,19 @@ const HomeStackScreen = () => {
       <HomeStack.Screen
         name="Lesson"
         component={LessonScreen}
+        options={{
+          headerTitleAlign: "left",
+          headerTintColor: "white",
+          headerShadowVisible: false, // hide the bottom border
+          headerStyle: {
+            backgroundColor: "black",
+          },
+          headerBackVisible: true,
+        }}
+      />
+      <HomeStack.Screen
+        name="StudyQuestion"
+        component={StudyQuestionScreen}
         options={{
           headerTitleAlign: "left",
           headerTintColor: "white",

@@ -10,7 +10,7 @@ interface Props {
 
 const MyText = ({ children, className = "" }: Props) => {
   return (
-    <Text style={cn`text-grey-700 text-md ${className} `}>{children}</Text>
+    <Text style={cn`text-neutral-200 text-md ${className} `}>{children}</Text>
   );
 };
 

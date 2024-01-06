@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create, GetState, SetState } from "zustand";
 import flatten from "flat";
+import { SuperMemoItem } from "supermemo";
 export type IStoreSet<Props = Record<string, any>> = (
   keyOrObj: Partial<Props> | keyof Props,
   value?: any
@@ -10,6 +11,11 @@ type PropsWithSet<Props = Record<string, any>> = Props & {
   set: IStoreSet<Props>;
 };
 
+interface StudyHistory {
+  slug: string;
+  superMemoItem: SuperMemoItem;
+  isoDueDate: string;
+}
 export type IStore = {
   user: PropsWithSet<{
     pronoun: string;
@@ -19,6 +25,10 @@ export type IStore = {
   }>;
   action: PropsWithSet<{
     completedLessons: string[];
+  }>;
+  study: PropsWithSet<{
+    history: StudyHistory[];
+    questions: string[];
   }>;
 };
 
@@ -78,6 +88,11 @@ export const useStore = create<IStore>(
       action: {
         set: factorySetFunc<IStore["action"]>("action"),
         completedLessons: [],
+      },
+      study: {
+        set: factorySetFunc<IStore["study"]>("study"),
+        history: [],
+        questions: [],
       },
     };
 

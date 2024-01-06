@@ -1,3 +1,4 @@
+import { FontAwesome5 } from "@expo/vector-icons";
 import { Dimensions, FlatList, TouchableOpacity, View } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
@@ -8,84 +9,57 @@ import { cn } from "../../lib/tailwind";
 import { HomeStackParamList } from "../../navigations/HomeStackScreen";
 import MyText from "../MyTexts/MyText";
 import clsx from "clsx";
+import { Level, lessonOverviews } from "../../constants/lessons.db";
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Register">;
 
-const levelColors = {
+const levelColors: Record<Level, string> = {
   easy: "bg-teal-50 text-teal-600",
   medium: "bg-amber-50 text-amber-600",
   hard: "bg-rose-50 text-rose-500",
 };
-export type Level = "easy" | "medium" | "hard";
-export type LessonOverview = {
-  slug: string;
-  title: string;
-  level: Level;
-  isComplete: boolean;
-};
+
 const LessonList = () => {
   const { navigate } = useNavigation<NavigationProp>();
 
   const { height } = Dimensions.get("window");
 
-  const { completedLessons } = useStore((state) => state.action);
+  // const { completedLessons } = useStore((state) => state.action);
+  const { history, set } = useStore((state) => state.study);
+  console.log("history", history);
 
-  const handleNavigate = (id: string) => navigate("Lesson", { id });
-
-  const lessons: LessonOverview[] = [
-    {
-      slug: "two_sum",
-      title: "Two Sum",
-      level: "easy",
-      isComplete: completedLessons.includes("two_sum"),
-    },
-    {
-      slug: "contains_duplicate",
-      title: "Contains Duplicate",
-      level: "easy",
-      isComplete: completedLessons.includes("contains_duplicate"),
-    },
-    {
-      slug: "valid_sudoku",
-      title: "Valiud Sudoku",
-      level: "medium",
-      isComplete: completedLessons.includes("valid_sudoku"),
-    },
-    {
-      slug: "minimum_windom_substring",
-      title: "Minimum Window Substring",
-      level: "hard",
-      isComplete: completedLessons.includes("minimum_windom_substring"),
-    },
-  ];
+  const handleStudyOneQuestion = (slug: string) => {
+    set({ questions: [slug] });
+    navigate("StudyQuestion");
+  };
 
   return (
     <View style={{ height: height * 0.7 }}>
       <FlatList
-        style={cn("bg-neutral-900 mt-2")}
-        data={lessons}
+        style={cn("mt-2")}
+        data={lessonOverviews}
         keyExtractor={(item, index) => `${item.title}-${index}`}
         ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         ListFooterComponent={<View style={{ height: 20 }} />} // so the last item displayed fully
         renderItem={({ item }) => {
+          const isComplete = history.some((his) => his.slug === item.slug);
+          console.log("isComplete", isComplete);
           return (
-            <TouchableOpacity onPress={() => handleNavigate(item.slug)}>
+            <TouchableOpacity onPress={() => handleStudyOneQuestion(item.slug)}>
               <View
                 style={cn(
-                  "flex flex-row justify-between bg-neutral-800 p-4 rounded-lg"
+                  "flex flex-row justify-between bg-neutral-800 pl-2 pr-4 py-4 rounded-lg"
                 )}
               >
-                {item.isComplete && (
-                  <View
-                    style={cn(
-                      "w-2 h-2 rounded-full bg-orange-400 absolute top-2 -left-3"
-                    )}
-                  />
-                )}
+                <View style={cn("flex flex-row justify-start gap-2")}>
+                  {isComplete && (
+                    <FontAwesome5 name="check-circle" size={24} color="teal" />
+                  )}
 
-                <MyText className="text-foreground font-bold">
-                  {item.title}
-                </MyText>
+                  <MyText className="text-foreground font-bold">
+                    {item.title}
+                  </MyText>
+                </View>
 
                 <View
                   style={cn(
