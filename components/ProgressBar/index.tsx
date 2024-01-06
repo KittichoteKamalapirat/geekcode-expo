@@ -27,7 +27,7 @@ const ProgressBar = ({ steps, step, height }: Props) => {
   }, [step, width]);
   return (
     <>
-      <Text style={tw`text-center mb-2 text-md`}>
+      <Text style={tw`text-center mb-2 text-md text-foreground`}>
         {step}/{steps}
       </Text>
       <View

@@ -24,7 +24,7 @@ export const black = "#000";
 
 export const textColor = grey900;
 export const bgColor = "#f3f3f3";
-export const primaryColor = "#FA947B";
+export const primaryColor = "white";
 export const primaryHoveredColor = "#FEBA72";
 
 export const secondaryColor = "#236D7D";

@@ -64,7 +64,7 @@ const FlashCard = ({ front, back }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-evenly",
+    // justifyContent: "center",
     // marginTop: 10,
     // alignItems: "center",
     width: "100%",

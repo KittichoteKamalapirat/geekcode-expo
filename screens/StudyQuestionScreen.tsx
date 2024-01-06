@@ -1,4 +1,11 @@
-import { Dimensions, FlatList, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -7,19 +14,19 @@ import { HomeStackParamList } from "../navigations/HomeStackScreen";
 
 import { useEffect, useRef, useState } from "react";
 
+import { SafeAreaView } from "react-native-safe-area-context";
 import { SuperMemoGrade, SuperMemoItem } from "supermemo";
 import FlashCard from "../components/FlashCard/FlashCard";
 import OneSideCardWithParent from "../components/FlashCard/OneSideCardWithParent";
+import Loader from "../components/Loader";
 import MyText from "../components/MyTexts/MyText";
+import ProgressBar from "../components/ProgressBar";
 import { FLASHCARD_MARGIN } from "../constants";
-import { Drill, Lesson, lessons } from "../constants/lessons.db";
+import { Drill, lessons } from "../constants/lessons.db";
 import { useStore } from "../lib/store";
 import { cn } from "../lib/tailwind";
 import { practiceSr } from "../util/spaceRep";
-import Loader from "../components/Loader";
-import { SafeAreaView } from "react-native-safe-area-context";
-
-const SCROLL_OFFSET_MESSAGE_NUM = 3;
+import { useIsFirstLaunch } from "../util/useIsFirstLaunch";
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Lesson">;
 
@@ -63,18 +70,14 @@ const grades: GradeDisplay[] = [
 ];
 const StudyQuestionScreen = () => {
   const { navigate, setOptions } = useNavigation<NavigationProp>();
+  const isFirstLaunch = useIsFirstLaunch();
 
-  const ref = useRef();
   const screenW = Dimensions.get("window").width;
-  const screenH = Dimensions.get("window").height;
+
   const flatListRef = useRef<FlatList>(null);
-  const [lessonIsComplete, setLessonIsComplete] = useState<boolean>(false);
 
   const route: RouteProp<{ params: { sheetTab: string; id: string } }> =
     useRoute();
-  const { set: setAction, completedLessons } = useStore(
-    (state) => state.action
-  );
 
   const {
     set: setStudy,
@@ -82,21 +85,12 @@ const StudyQuestionScreen = () => {
     questions,
   } = useStore((state) => state.study);
 
-  const { id: userId } = useStore((state) => state.user);
-
   const lessonSlug = questions.length && questions[0];
 
-  console.log("questions", questions);
-  console.log("lessonSlug", lessonSlug);
-
   const { height } = Dimensions.get("window");
+  const [step, setStep] = useState(0);
 
   const lesson = lessons.find((lesson) => lesson.overview.slug === lessonSlug);
-
-  const handleViewableItemsChanged = (x: any) => {
-    console.log("Visible items are", x);
-    console.log("Changed in this iteration");
-  };
 
   const flashcard: SuperMemoItem = {
     interval: 0,
@@ -136,6 +130,13 @@ const StudyQuestionScreen = () => {
   if (questions.length === 0) navigate("Home");
   if (!lesson) return <Loader />;
 
+  const questionsNum = lesson.drills.length;
+  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const positionX = e.nativeEvent.contentOffset.x;
+    const currentStep = Math.ceil(positionX / screenW);
+
+    setStep(currentStep <= questionsNum ? currentStep : questionsNum);
+  };
   useEffect(() => {
     setOptions({ title: lesson.overview.title });
   }, [lesson]);
@@ -162,6 +163,8 @@ const StudyQuestionScreen = () => {
         decelerationRate="fast"
         snapToInterval={screenW}
         horizontal
+        onScroll={handleScroll}
+        scrollEventThrottle={screenW / 2} // random value so it's not too slow and not called too many times
         ItemSeparatorComponent={() => (
           <View
             style={{
@@ -174,10 +177,13 @@ const StudyQuestionScreen = () => {
         ref={flatListRef}
         renderItem={({ item, index }) => {
           return (
-            <FlashCard
-              front={`${index + 1}.${item.question}`}
-              back={item.answer}
-            />
+            <View>
+              <ProgressBar step={step} steps={questionsNum} height={10} />
+              <FlashCard
+                front={`${index + 1}.${item.question}`}
+                back={item.answer}
+              />
+            </View>
           );
         }}
         ListHeaderComponent={() => (
@@ -188,7 +194,11 @@ const StudyQuestionScreen = () => {
           </OneSideCardWithParent>
         )}
         ListFooterComponent={() => (
-          <OneSideCardWithParent hasPaddingLeft isHeader={false}>
+          <OneSideCardWithParent
+            hasPaddingLeft
+            isHeader={false}
+            isFirstLaunch={isFirstLaunch}
+          >
             <View style={cn("flex flex-col-reverse gap-2")}>
               {grades.map((grade) => (
                 <TouchableOpacity

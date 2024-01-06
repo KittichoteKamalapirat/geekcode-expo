@@ -19,7 +19,7 @@ const OneSideCard: React.FC<Props> = ({ title, onPress }) => {
           width: screenW - FLASHCARD_MARGIN * 2,
           height: screenH * 0.75,
 
-          marginVertical: "auto",
+          marginVertical: 20,
           padding: 16,
           alignItems: "center",
           justifyContent: "center",
