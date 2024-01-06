@@ -17,11 +17,50 @@ import { useStore } from "../lib/store";
 import { cn } from "../lib/tailwind";
 import { practiceSr } from "../util/spaceRep";
 import Loader from "../components/Loader";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SCROLL_OFFSET_MESSAGE_NUM = 3;
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Lesson">;
 
+interface GradeDisplay {
+  score: SuperMemoGrade;
+  emoji: string;
+  text: string;
+}
+
+const grades: GradeDisplay[] = [
+  {
+    score: 0,
+    emoji: "🚫",
+    text: "Didn't understand",
+  },
+  {
+    score: 1,
+    emoji: "🤔",
+    text: "Barely understood",
+  },
+  {
+    score: 2,
+    emoji: "🤨",
+    text: "Struggled to understand",
+  },
+  {
+    score: 3,
+    emoji: "😕",
+    text: "Somewhat understood",
+  },
+  {
+    score: 4,
+    emoji: "👍",
+    text: "Understood well",
+  },
+  {
+    score: 5,
+    emoji: "🌟",
+    text: "Understood perfectly",
+  },
+];
 const StudyQuestionScreen = () => {
   const { navigate, setOptions } = useNavigation<NavigationProp>();
 
@@ -93,7 +132,6 @@ const StudyQuestionScreen = () => {
       flatListRef.current?.scrollToOffset({ animated: true, offset: 0 }); // scroll to header
     }
   };
-  const grades: SuperMemoGrade[] = [0, 1, 2, 3, 4, 5];
 
   if (questions.length === 0) navigate("Home");
   if (!lesson) return <Loader />;
@@ -103,7 +141,7 @@ const StudyQuestionScreen = () => {
   }, [lesson]);
 
   return (
-    <View style={cn("bg-neutral-900")}>
+    <SafeAreaView style={cn("bg-neutral-900")}>
       <FlatList
         style={{
           height: height * 1,
@@ -144,30 +182,32 @@ const StudyQuestionScreen = () => {
         }}
         ListHeaderComponent={() => (
           <OneSideCardWithParent hasPaddingRight>
-            <MyText>{lesson.overview.title}</MyText>
-
             <View style={cn("flex flex-col-reverse")}>
               <MyText>{lesson.description}</MyText>
             </View>
           </OneSideCardWithParent>
         )}
         ListFooterComponent={() => (
-          <OneSideCardWithParent hasPaddingLeft>
-            <MyText>How well did you understand</MyText>
-
-            <View style={cn("flex flex-col-reverse")}>
+          <OneSideCardWithParent hasPaddingLeft isHeader={false}>
+            <View style={cn("flex flex-col-reverse gap-2")}>
               {grades.map((grade) => (
                 <TouchableOpacity
-                  onPress={() => handlePractice(lesson.overview.slug, grade)}
+                  onPress={() =>
+                    handlePractice(lesson.overview.slug, grade.score)
+                  }
                 >
-                  <MyText>{grade}</MyText>
+                  <View style={cn("bg-neutral-800 rounded-md p-4")}>
+                    <MyText className="text-center">
+                      {grade.emoji} {grade.text}
+                    </MyText>
+                  </View>
                 </TouchableOpacity>
               ))}
             </View>
           </OneSideCardWithParent>
         )}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

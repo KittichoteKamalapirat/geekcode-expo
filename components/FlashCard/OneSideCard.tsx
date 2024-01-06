@@ -17,18 +17,20 @@ const OneSideCard: React.FC<Props> = ({ title, onPress }) => {
       <View
         style={{
           width: screenW - FLASHCARD_MARGIN * 2,
-          height: screenH * 0.7,
+          height: screenH * 0.75,
+
           marginVertical: "auto",
-          paddingTop: 16,
-          paddingHorizontal: 8,
+          padding: 16,
           alignItems: "center",
+          justifyContent: "center",
           display: "flex",
           flexDirection: "column",
           backgroundColor: "black",
           borderRadius: 12,
+          marginBottom: 35,
         }}
       >
-        <MyText>{title}</MyText>
+        <MyText className="text-xl">{title}</MyText>
       </View>
     </TouchableOpacity>
   );

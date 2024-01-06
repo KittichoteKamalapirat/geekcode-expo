@@ -46,7 +46,7 @@ const HomeScreen = () => {
         footer={
           <View style={cn("flex flex-row items-center gap-4 mx-auto mt-4")}>
             <Button
-              label="Study"
+              label="Study cards"
               className="w-full"
               onPress={handleStudyManyQuestion}
             />
