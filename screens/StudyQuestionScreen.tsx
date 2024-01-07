@@ -216,9 +216,9 @@ const StudyQuestionScreen = () => {
         )}
         keyExtractor={(item, index) => String(index)}
         ref={flatListRef}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }: { item: Drill; index: number }) => {
           return (
-            <MyView>
+            <MyView key={index}>
               <MyModal
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
@@ -233,7 +233,10 @@ const StudyQuestionScreen = () => {
           );
         }}
         ListHeaderComponent={() => (
-          <HeaderCard title={lesson.overview.title}>
+          <HeaderCard
+            title={lesson.overview.title}
+            isFirstLaunch={isFirstLaunch}
+          >
             <View style={cn("flex flex-col-reverse")}>
               <MyText className="text-lg">{lesson.description}</MyText>
             </View>

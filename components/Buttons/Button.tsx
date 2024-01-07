@@ -30,6 +30,7 @@ interface ClassProps {
 }
 
 export const BUTTON_SIZE = {
+  XL: "XL",
   LARGE: "LARGE",
   MEDIUM: "MEDIUM",
   SMALL: "SMALL",
@@ -62,6 +63,7 @@ const SIZE_STYLE: Record<ButtonSizeValues, string> = {
   SMALL: "text-sm py-3",
   MEDIUM: "text-md py-4",
   LARGE: "text-lg py-4",
+  XL: "text-xl py-4",
 };
 
 const TEXT_COLOR: Record<ButtonVariantValues, string> = {

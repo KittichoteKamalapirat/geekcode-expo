@@ -1,21 +1,15 @@
 import { FontAwesome5 } from "@expo/vector-icons";
-import {
-  Dimensions,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, FlatList, TouchableOpacity, View } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
+import clsx from "clsx";
+import { Level, lessonOverviews } from "../../constants/lessons.db";
 import { useStore } from "../../lib/store";
 import { cn } from "../../lib/tailwind";
 import { HomeStackParamList } from "../../navigations/HomeStackScreen";
 import MyText from "../MyTexts/MyText";
-import clsx from "clsx";
-import { Level, lessonOverviews } from "../../constants/lessons.db";
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Register">;
 
@@ -46,7 +40,7 @@ const LessonList = () => {
   };
 
   return (
-    <View style={{ height: height * 0.7 }}>
+    <View style={{ height: height * 0.75 }}>
       <FlatList
         style={cn("mt-2")}
         data={lessonOverviews}
@@ -75,7 +69,7 @@ const LessonList = () => {
                     name={didWell ? "check-circle" : "redo-alt"}
                     size={didWell ? 20 : 16}
                     color={didWell ? "teal" : "orange"}
-                    style={cn(isComplete ? "block" : "opacity-0")}
+                    style={cn(isComplete ? "" : "opacity-0")}
                   />
 
                   <MyText className="text-foreground-primary font-semibold flex-1">
