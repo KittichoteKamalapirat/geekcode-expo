@@ -5,6 +5,7 @@ export const LocalStorage = {
   userCountryCode: "userCountryCode",
   userPronoun: "userPronoun",
   completedLessons: "completedLessons",
+  hasSwipedCard: "hasSwipedCard",
 } as const;
 
 export type LocalStorageKeys = ObjectKeys<typeof LocalStorage>;

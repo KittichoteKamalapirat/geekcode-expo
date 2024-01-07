@@ -1,22 +1,20 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import React, { ReactNode, useEffect, useRef } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { Dimensions, View, Animated, Text, ScrollView } from "react-native";
 import { FLASHCARD_MARGIN } from "../../constants";
 import MyText from "../MyTexts/MyText";
 import { cn } from "../../lib/tailwind";
 import { backgroundSecondary, foregroundPrimary } from "../../theme/style";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LocalStorage } from "../../lib/localStorage";
 
 type Props = {
   children: ReactNode;
   title: string;
-  isFirstLaunch?: boolean;
 };
 
-const HeaderCard: React.FC<Props> = ({
-  title,
-  isFirstLaunch = false,
-  children,
-}) => {
+const HeaderCard: React.FC<Props> = ({ title, children }) => {
+  const [hasSwipedCard, setHasSwipedCard] = useState(false);
   const screenW = Dimensions.get("window").width;
   const screenH = Dimensions.get("window").height;
 
@@ -31,7 +29,7 @@ const HeaderCard: React.FC<Props> = ({
       // Start the animation
       Animated.timing(swipeAnimate, {
         toValue: 1,
-        duration: 1000, // Duration of the animation
+        duration: 2000, // Duration of the animation
         useNativeDriver: true, // Use native driver for better performance
       }).start(() => startAnimation()); // Loop the animation
     };
@@ -45,6 +43,17 @@ const HeaderCard: React.FC<Props> = ({
     outputRange: [20, -20],
   });
 
+  useEffect(() => {
+    async function shouldHideSwipeIndicator() {
+      const hasSwipedCard = await AsyncStorage.getItem(
+        LocalStorage.hasSwipedCard
+      );
+      if (hasSwipedCard === "true") {
+        setHasSwipedCard(true);
+      }
+    }
+    shouldHideSwipeIndicator();
+  }, []);
   return (
     <View
       style={{
@@ -70,7 +79,7 @@ const HeaderCard: React.FC<Props> = ({
           {title}
         </Text>
 
-        {isFirstLaunch && (
+        {!hasSwipedCard && (
           <View style={cn("flex flex-col items-center justify-between")}>
             <Animated.View
               style={{
@@ -84,7 +93,7 @@ const HeaderCard: React.FC<Props> = ({
               />
             </Animated.View>
 
-            <MyText className="text-xs">Swipe Left</MyText>
+            <MyText className="text-xs">Swipe</MyText>
           </View>
         )}
       </View>

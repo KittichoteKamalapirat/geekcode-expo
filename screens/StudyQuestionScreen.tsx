@@ -32,6 +32,8 @@ import { cn } from "../lib/tailwind";
 import { practiceSr } from "../util/spaceRep";
 import { useIsFirstLaunch } from "../util/useIsFirstLaunch";
 import HeaderCard from "../components/FlashCard/HeaderCard";
+import { LocalStorage } from "../lib/localStorage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Lesson">;
 
@@ -148,9 +150,10 @@ const StudyQuestionScreen = () => {
 
   const questionsNum = lesson.drills.length;
 
-  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+  const handleScroll = async (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const positionX = e.nativeEvent.contentOffset.x;
     const currentStep = Math.ceil(positionX / screenW);
+    AsyncStorage.setItem(LocalStorage.hasSwipedCard, "true");
     if (currentStep === 0 || currentStep > questionsNum) {
       setIsDrill(false);
     } else {
@@ -232,10 +235,7 @@ const StudyQuestionScreen = () => {
           );
         }}
         ListHeaderComponent={() => (
-          <HeaderCard
-            title={lesson.overview.title}
-            isFirstLaunch={isFirstLaunch}
-          >
+          <HeaderCard title={lesson.overview.title}>
             <View style={cn("flex flex-col-reverse")}>
               <MyText className="text-lg">{lesson.description}</MyText>
             </View>
