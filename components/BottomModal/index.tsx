@@ -4,9 +4,11 @@ import {
 } from "@gorhom/bottom-sheet";
 import React, { ReactNode, useCallback, useMemo, useRef } from "react";
 import { StyleSheet, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import OutsidePressHandler from "react-native-outside-press";
-import IconButton from "../Buttons/IconButton";
 import tw from "../../lib/tailwind";
+import IconButton from "../Buttons/IconButton";
+import MyText from "../MyTexts/MyText";
 
 interface Props {
   children: ReactNode;
@@ -20,7 +22,7 @@ const BottomModal = ({ isOpen, setIsOpen, children, icon }: Props) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   // variables
-  const snapPoints = useMemo(() => ["1%", "100%"], []);
+  const snapPoints = useMemo(() => ["1%", "80%"], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -42,53 +44,53 @@ const BottomModal = ({ isOpen, setIsOpen, children, icon }: Props) => {
 
   // renders
   return (
-    <BottomSheetModalProvider>
-      {/* <TouchableOpacity onPress={handlePresentModalPress}>
-        {icon}
-      </TouchableOpacity> */}
-
-      {!isOpen && (
-        <IconButton
-          icon={icon}
-          onPress={handlePresentModalPress}
-          variant="NAKED"
-          style="mx-0"
-        />
-      )}
-
-      <OutsidePressHandler
-        disabled={false}
-        onOutsidePress={() => {
-          handleDismissModalPress();
-        }}
-      >
+    <GestureHandlerRootView>
+      <BottomSheetModalProvider>
         <View style={styles.container}>
-          <BottomSheetModal
-            ref={bottomSheetModalRef}
-            index={1}
-            snapPoints={snapPoints}
-            onChange={handleSheetChanges}
-            enablePanDownToClose
-            enableOverDrag
-            detached
-            topInset={-200}
-            bottomInset={0}
-            style={tw`bg-blue-200 p-10`}
+          {!isOpen && (
+            <IconButton
+              icon={icon}
+              onPress={handlePresentModalPress}
+              variant="NAKED"
+            />
+          )}
+
+          <MyText>yyy</MyText>
+          <OutsidePressHandler
+            disabled={false}
+            onOutsidePress={() => {
+              handleDismissModalPress();
+            }}
           >
-            <View style={styles.contentContainer}>{children}</View>
-          </BottomSheetModal>
+            <View>
+              <BottomSheetModal
+                ref={bottomSheetModalRef}
+                index={1}
+                snapPoints={snapPoints}
+                onChange={handleSheetChanges}
+                enablePanDownToClose
+                enableOverDrag
+                detached
+                topInset={0}
+                bottomInset={0}
+                style={tw`bg-blue-200 p-10`}
+              >
+                <View style={styles.contentContainer}>{children}</View>
+              </BottomSheetModal>
+            </View>
+          </OutsidePressHandler>
         </View>
-      </OutsidePressHandler>
-    </BottomSheetModalProvider>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 24,
     justifyContent: "center",
-    zIndex: 30,
-    position: "absolute",
+    backgroundColor: "grey",
   },
   contentContainer: {
     flex: 1,

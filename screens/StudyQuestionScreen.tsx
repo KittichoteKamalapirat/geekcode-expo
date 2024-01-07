@@ -1,3 +1,6 @@
+import { AntDesign } from "@expo/vector-icons";
+
+import { Ionicons } from "@expo/vector-icons";
 import {
   Dimensions,
   FlatList,
@@ -12,10 +15,11 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import { HomeStackParamList } from "../navigations/HomeStackScreen";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SuperMemoGrade, SuperMemoItem } from "supermemo";
+import BottomModal from "../components/BottomModal";
 import FlashCard from "../components/FlashCard/FlashCard";
 import OneSideCardWithParent from "../components/FlashCard/OneSideCardWithParent";
 import Loader from "../components/Loader";
@@ -27,6 +31,10 @@ import { useStore } from "../lib/store";
 import { cn } from "../lib/tailwind";
 import { practiceSr } from "../util/spaceRep";
 import { useIsFirstLaunch } from "../util/useIsFirstLaunch";
+import BottomSheet, { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { EventProvider } from "react-native-outside-press";
+import MyModal from "../components/Modal";
+import MyView from "../components/MyView";
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Lesson">;
 
@@ -72,6 +80,8 @@ const StudyQuestionScreen = () => {
   const { navigate, setOptions } = useNavigation<NavigationProp>();
   const isFirstLaunch = useIsFirstLaunch();
 
+  const [isDrill, setIsDrill] = useState<boolean>(false);
+
   const screenW = Dimensions.get("window").width;
 
   const flatListRef = useRef<FlatList>(null);
@@ -97,6 +107,8 @@ const StudyQuestionScreen = () => {
     repetition: 0,
     efactor: 2.5,
   };
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handlePractice = (slug: string, grade: SuperMemoGrade) => {
     // 1. update history
@@ -127,15 +139,22 @@ const StudyQuestionScreen = () => {
     }
   };
 
+  const snapPoints = useMemo(() => ["25%", "50%", "70%"], []);
+
   if (questions.length === 0) navigate("Home");
   if (!lesson) return <Loader />;
 
   const questionsNum = lesson.drills.length;
+
   const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const positionX = e.nativeEvent.contentOffset.x;
     const currentStep = Math.ceil(positionX / screenW);
-
-    setStep(currentStep <= questionsNum ? currentStep : questionsNum);
+    if (currentStep === 0 || currentStep > questionsNum) {
+      setIsDrill(false);
+    } else {
+      setIsDrill(true);
+    }
+    setStep(currentStep);
   };
   useEffect(() => {
     setOptions({ title: lesson.overview.title });
@@ -143,6 +162,22 @@ const StudyQuestionScreen = () => {
 
   return (
     <SafeAreaView style={cn("bg-neutral-900")}>
+      <AntDesign
+        name="questioncircleo"
+        size={24}
+        color="white"
+        onPress={() => setModalVisible(true)}
+        style={cn("absolute top-4 right-4 z-50")}
+      />
+      {isDrill && (
+        <ProgressBar
+          step={step}
+          steps={questionsNum}
+          height={10}
+          className="mx-4"
+        />
+      )}
+
       <FlatList
         style={{
           height: height * 1,
@@ -177,13 +212,21 @@ const StudyQuestionScreen = () => {
         ref={flatListRef}
         renderItem={({ item, index }) => {
           return (
-            <View>
-              <ProgressBar step={step} steps={questionsNum} height={10} />
+            <MyView>
+              <MyModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+              >
+                <MyText className="text-lg font-semibold">
+                  {lesson.overview.title}
+                </MyText>
+                <MyText className="mt-4">{lesson.description}</MyText>
+              </MyModal>
               <FlashCard
                 front={`${index + 1}.${item.question}`}
                 back={item.answer}
               />
-            </View>
+            </MyView>
           );
         }}
         ListHeaderComponent={() => (

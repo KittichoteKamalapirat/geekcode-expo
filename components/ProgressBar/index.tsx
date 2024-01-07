@@ -1,14 +1,15 @@
 import { View, Text, Animated } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-import tw from "../../lib/tailwind";
+import tw, { cn } from "../../lib/tailwind";
 import { primaryColor } from "../../theme/style";
 
 interface Props {
   step: number;
   steps: number;
   height: number;
+  className?: string;
 }
-const ProgressBar = ({ steps, step, height }: Props) => {
+const ProgressBar = ({ steps, step, height, className }: Props) => {
   const [width, setWidth] = useState(0);
   const animatedValue = useRef(new Animated.Value(-1000)).current;
   const reactive = useRef(new Animated.Value(-1000)).current;
@@ -26,7 +27,7 @@ const ProgressBar = ({ steps, step, height }: Props) => {
     reactive.setValue(newWidth);
   }, [step, width]);
   return (
-    <>
+    <View style={cn(className)}>
       <Text style={tw`text-center mb-2 text-md text-foreground`}>
         {step}/{steps}
       </Text>
@@ -59,7 +60,7 @@ const ProgressBar = ({ steps, step, height }: Props) => {
           }}
         />
       </View>
-    </>
+    </View>
   );
 };
 

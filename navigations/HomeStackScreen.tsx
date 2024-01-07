@@ -5,7 +5,7 @@ import {
 } from "@react-navigation/native-stack";
 
 import { HomeScreen, LoginScreen, RegisterScreen } from "../screens";
-import LessonScreen from "../screens/LessonScreen";
+
 import ProfileScreen from "../screens/ProfileScreen";
 import StudyQuestionScreen from "../screens/StudyQuestionScreen";
 import { headerBgColor, headerTextColor } from "../theme/style";
@@ -114,7 +114,7 @@ const HomeStackScreen = () => {
         }}
       /> */}
 
-      <HomeStack.Screen
+      {/* <HomeStack.Screen
         name="Lesson"
         component={LessonScreen}
         options={{
@@ -126,7 +126,7 @@ const HomeStackScreen = () => {
           },
           headerBackVisible: true,
         }}
-      />
+      /> */}
       <HomeStack.Screen
         name="StudyQuestion"
         component={StudyQuestionScreen}

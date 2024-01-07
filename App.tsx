@@ -5,6 +5,7 @@ import {
 
 import { ApolloProvider } from "@apollo/client";
 import { default as React, useState } from "react";
+import { EventProvider } from "react-native-outside-press";
 import AppWithoutApollo from "./AppWithoutApollo";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import { apolloClient } from "./lib/apollo";
@@ -15,25 +16,28 @@ export default function App() {
   const ref = createNavigationContainerRef();
 
   return (
-    <ErrorBoundary>
-      <NavigationContainer
-        ref={ref}
-        onReady={() => {
-          const routeName = ref.getCurrentRoute && ref.getCurrentRoute()?.name;
-          setRouteName(routeName || "");
-        }}
-        onStateChange={async () => {
-          const currentRouteName =
-            ref.getCurrentRoute && ref.getCurrentRoute()?.name;
+    <EventProvider>
+      <ErrorBoundary>
+        <NavigationContainer
+          ref={ref}
+          onReady={() => {
+            const routeName =
+              ref.getCurrentRoute && ref.getCurrentRoute()?.name;
+            setRouteName(routeName || "");
+          }}
+          onStateChange={async () => {
+            const currentRouteName =
+              ref.getCurrentRoute && ref.getCurrentRoute()?.name;
 
-          setRouteName(currentRouteName || "");
-        }}
-      >
-        <ApolloProvider client={apolloClient}>
-          <AppWithoutApollo />
-          <TabNavigator routeName={routeName} />
-        </ApolloProvider>
-      </NavigationContainer>
-    </ErrorBoundary>
+            setRouteName(currentRouteName || "");
+          }}
+        >
+          <ApolloProvider client={apolloClient}>
+            <AppWithoutApollo />
+            <TabNavigator routeName={routeName} />
+          </ApolloProvider>
+        </NavigationContainer>
+      </ErrorBoundary>
+    </EventProvider>
   );
 }

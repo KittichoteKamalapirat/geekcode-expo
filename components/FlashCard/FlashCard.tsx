@@ -1,5 +1,11 @@
 import React, { useRef, useState } from "react";
-import { Animated, KeyboardAvoidingView, StyleSheet, View } from "react-native";
+import {
+  Animated,
+  Dimensions,
+  KeyboardAvoidingView,
+  StyleSheet,
+  View,
+} from "react-native";
 import OneSideCard from "./OneSideCard";
 import { cn } from "../../lib/tailwind";
 
@@ -10,6 +16,9 @@ interface Props {
 const FlashCard = ({ front, back }: Props) => {
   const animate = useRef(new Animated.Value(0));
   const [isFlipped, setIsFlipped] = useState(false);
+
+  const screenW = Dimensions.get("window").width;
+  const screenH = Dimensions.get("window").height;
 
   const doAFlip = () => {
     Animated.timing(animate.current, {
@@ -48,7 +57,14 @@ const FlashCard = ({ front, back }: Props) => {
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.container}>
+    <KeyboardAvoidingView
+      behavior="padding"
+      style={{
+        height: screenH * 0.7,
+        // backgroundColor: "red",
+        marginVertical: 20,
+      }}
+    >
       <View style={cn("xxxxx")}>
         <Animated.View style={[styles.hidden, rotateFront]}>
           <OneSideCard title={front} onPress={doAFlip} />
@@ -62,13 +78,6 @@ const FlashCard = ({ front, back }: Props) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // justifyContent: "center",
-    // marginTop: 10,
-    // alignItems: "center",
-    width: "100%",
-  },
   hidden: {
     backfaceVisibility: "hidden",
   },

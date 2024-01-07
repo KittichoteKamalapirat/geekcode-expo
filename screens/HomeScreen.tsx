@@ -1,15 +1,15 @@
-import { SafeAreaView, View } from "react-native";
-import MyText from "../components/MyTexts/MyText";
-import { Container } from "../components/containers/Container";
-
-import LessonList from "../components/LessonList/LessonList";
-import { cn } from "../lib/tailwind";
-import { useStore } from "../lib/store";
-import ViewWithFooter from "../components/containers/ViewWithFooter";
-import Button from "../components/Buttons/Button";
-import { LessonOverview, lessonOverviews } from "../constants/lessons.db";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import React from "react";
+import { SafeAreaView, StyleSheet, View } from "react-native";
+import Button from "../components/Buttons/Button";
+import LessonList from "../components/LessonList/LessonList";
+import MyText from "../components/MyTexts/MyText";
+import { Container } from "../components/containers/Container";
+import ViewWithFooter from "../components/containers/ViewWithFooter";
+import { LessonOverview, lessonOverviews } from "../constants/lessons.db";
+import { useStore } from "../lib/store";
+import { cn } from "../lib/tailwind";
 import { HomeStackParamList } from "../navigations/HomeStackScreen";
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Home">;
@@ -39,6 +39,7 @@ const HomeScreen = () => {
     setStudy({ questions: slugs });
     navigate("StudyQuestion");
   };
+
   return (
     <SafeAreaView style={cn`h-full bg-neutral-900 flex`}>
       <ViewWithFooter
@@ -70,3 +71,46 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+});

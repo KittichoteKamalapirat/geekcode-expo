@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    zIndex: 30,
+    zIndex: 100,
     position: "absolute",
   },
   contentContainer: {
