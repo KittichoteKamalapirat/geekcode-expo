@@ -47,12 +47,15 @@ const LessonList = () => {
         keyExtractor={(item, index) => `${item.title}-${index}`}
         ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
         ListFooterComponent={<View style={{ height: 20 }} />} // so the last item displayed fully
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           const isComplete = history.find((his) => his.slug === item.slug);
           const didWell = isComplete && isComplete?.superMemoItem.efactor > 2.5;
 
           return (
-            <TouchableOpacity onPress={() => handleStudyOneQuestion(item.slug)}>
+            <TouchableOpacity
+              onPress={() => handleStudyOneQuestion(item.slug)}
+              key={index}
+            >
               <View
                 style={cn(
                   "flex flex-row justify-between items-start gap-4 bg-background-secondary pl-2 pr-4 py-4 rounded-lg"

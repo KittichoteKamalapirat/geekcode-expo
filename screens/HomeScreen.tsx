@@ -6,7 +6,6 @@ import Button from "../components/Buttons/Button";
 import LessonList from "../components/LessonList/LessonList";
 import MyText from "../components/MyTexts/MyText";
 import { Container } from "../components/containers/Container";
-import ViewWithFooter from "../components/containers/ViewWithFooter";
 import { LessonOverview, lessonOverviews } from "../constants/lessons.db";
 import { useStore } from "../lib/store";
 import { cn } from "../lib/tailwind";

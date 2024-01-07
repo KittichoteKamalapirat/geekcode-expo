@@ -89,24 +89,27 @@ const HeaderCard: React.FC<Props> = ({
         )}
       </View>
 
-      <ScrollView
-        contentContainerStyle={{
-          alignItems: "center",
-          justifyContent: "center",
-          padding: 16,
-          paddingBottom: 24,
-        }}
-        style={{
-          width: screenW - FLASHCARD_MARGIN * 2,
-          height: screenH * 0.75,
-          backgroundColor: backgroundSecondary,
-          //   borderColor: "gray",
-          //   borderWidth: 0.5,
-          borderRadius: 12,
-        }}
-      >
-        {children}
-      </ScrollView>
+      <View style={{ flex: 1 }}>
+        <View
+          style={{
+            height: screenH * 0.7,
+          }}
+        >
+          <ScrollView
+            contentContainerStyle={{
+              padding: 16,
+              paddingBottom: 24,
+            }}
+            style={{
+              width: screenW - FLASHCARD_MARGIN * 2,
+              backgroundColor: backgroundSecondary,
+              borderRadius: 12,
+            }}
+          >
+            {children}
+          </ScrollView>
+        </View>
+      </View>
     </View>
   );
 };

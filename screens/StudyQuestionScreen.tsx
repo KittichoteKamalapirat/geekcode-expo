@@ -193,7 +193,7 @@ const StudyQuestionScreen = () => {
         //   // itemVisiblePercentThreshold: 100,
         //   viewAreaCoveragePercentThreshold: 100,
         // }}
-
+        keyExtractor={(item, index) => `drill-${index}`}
         data={lesson?.drills as Drill[]}
         contentContainerStyle={{
           flexGrow: 1,
@@ -214,7 +214,6 @@ const StudyQuestionScreen = () => {
             }}
           />
         )}
-        keyExtractor={(item, index) => String(index)}
         ref={flatListRef}
         renderItem={({ item, index }: { item: Drill; index: number }) => {
           return (
