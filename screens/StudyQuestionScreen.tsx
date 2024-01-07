@@ -235,7 +235,7 @@ const StudyQuestionScreen = () => {
         ListHeaderComponent={() => (
           <HeaderCard title={lesson.overview.title}>
             <View style={cn("flex flex-col-reverse")}>
-              <MyText>{lesson.description}</MyText>
+              <MyText className="text-lg">{lesson.description}</MyText>
             </View>
           </HeaderCard>
         )}

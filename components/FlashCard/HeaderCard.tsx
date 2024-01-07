@@ -1,10 +1,10 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { ReactNode, useEffect, useRef } from "react";
-import { Dimensions, View, Animated } from "react-native";
+import { Dimensions, View, Animated, Text, ScrollView } from "react-native";
 import { FLASHCARD_MARGIN } from "../../constants";
 import MyText from "../MyTexts/MyText";
 import { cn } from "../../lib/tailwind";
-import { backgroundSecondary } from "../../theme/style";
+import { backgroundSecondary, foregroundPrimary } from "../../theme/style";
 
 type Props = {
   children: ReactNode;
@@ -57,7 +57,18 @@ const HeaderCard: React.FC<Props> = ({
       }}
     >
       <View style={cn("flex flex-row items-center justify-between")}>
-        <MyText className="text-lg font-semibold">{title}</MyText>
+        {/* <MyText className="text-lg font-semibold">{title}</MyText> */}
+        <Text
+          style={{
+            fontSize: 24,
+            color: foregroundPrimary,
+            fontWeight: "500",
+            marginBottom: 12,
+            maxWidth: screenW,
+          }}
+        >
+          {title}
+        </Text>
 
         {isFirstLaunch && (
           <View style={cn("flex flex-col items-center justify-between")}>
@@ -78,12 +89,16 @@ const HeaderCard: React.FC<Props> = ({
         )}
       </View>
 
-      <View
+      <ScrollView
+        contentContainerStyle={{
+          alignItems: "center",
+          justifyContent: "center",
+          padding: 16,
+          paddingBottom: 24,
+        }}
         style={{
           width: screenW - FLASHCARD_MARGIN * 2,
           height: screenH * 0.75,
-          padding: 16,
-          justifyContent: "center",
           backgroundColor: backgroundSecondary,
           //   borderColor: "gray",
           //   borderWidth: 0.5,
@@ -91,7 +106,7 @@ const HeaderCard: React.FC<Props> = ({
         }}
       >
         {children}
-      </View>
+      </ScrollView>
     </View>
   );
 };

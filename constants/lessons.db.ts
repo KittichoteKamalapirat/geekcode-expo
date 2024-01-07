@@ -484,7 +484,8 @@ s and t consist of lowercase English letters.
           "Check all substrings of s to find if they contain all characters of t ",
       },
       {
-        question: "What Data Structure could be used to optimize the solution?",
+        question:
+          "What kind of data structure could help us track the frequency of each character in the current window of our string?",
         answer: "Hash Map",
       },
       {
@@ -494,9 +495,58 @@ s and t consist of lowercase English letters.
       },
       {
         question:
+          "What should we do if our current window doesn't contain all characters of t?",
+        answer: "Expand the window from the right",
+      },
+      {
+        question:
+          "If our current window contains all characters of t, what should we do to find the smallest valid window?",
+        answer: "Shrink the window from the left",
+      },
+      {
+        question:
           "How can we determine if our current window contains all characters of t without iterating through the entire hashmap?",
         answer:
           "By keeping track of two variables: the number of unique characters we have from `t` in our current window and the total unique characters needed from `t` ",
+      },
+      {
+        question:
+          "Given that the input strings only consist of lowercase or uppercase English characters, what is the time and space complexity of the sliding window approach below? Assume n is the length of s and m is the length of t.",
+        answer: "Time complexity: O(n+m), Space complexity: O(1)",
+      },
+      {
+        question: "Code Solution",
+        answer: `class Solution:
+          def minWindow(self, s: str, t: str) -> str:
+              if t == "":
+                  return ""
+      
+              countT, window = {}, {}
+              for c in t:
+                  countT[c] = 1 + countT.get(c, 0)
+      
+              have, need = 0, len(countT)
+              res, resLen = [-1, -1], float("infinity")
+              l = 0
+              for r in range(len(s)):
+                  c = s[r]
+                  window[c] = 1 + window.get(c, 0)
+      
+                  if c in countT and window[c] == countT[c]:
+                      have += 1
+      
+                  while have == need:
+                      # update our result
+                      if (r - l + 1) < resLen:
+                          res = [l, r]
+                          resLen = r - l + 1
+                      # pop from the left of our window
+                      window[s[l]] -= 1
+                      if s[l] in countT and window[s[l]] < countT[s[l]]:
+                          have -= 1
+                      l += 1
+              l, r = res
+              return s[l : r + 1] if resLen != float("infinity") else ""`,
       },
     ],
   },
