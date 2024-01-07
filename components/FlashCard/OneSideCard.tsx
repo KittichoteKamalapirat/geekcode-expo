@@ -1,8 +1,8 @@
 import React from "react";
 import { Dimensions, TouchableOpacity, View } from "react-native";
 import { FLASHCARD_MARGIN } from "../../constants";
+import { backgroundSecondary } from "../../theme/style";
 import MyText from "../MyTexts/MyText";
-import { backgroundPrimary, backgroundSecondary } from "../../theme/style";
 
 type Props = {
   title: string;

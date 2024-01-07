@@ -1,5 +1,11 @@
 import { FontAwesome5 } from "@expo/vector-icons";
-import { Dimensions, FlatList, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -45,29 +51,34 @@ const LessonList = () => {
         style={cn("mt-2")}
         data={lessonOverviews}
         keyExtractor={(item, index) => `${item.title}-${index}`}
-        ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+        ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
         ListFooterComponent={<View style={{ height: 20 }} />} // so the last item displayed fully
         renderItem={({ item }) => {
           const isComplete = history.find((his) => his.slug === item.slug);
           const didWell = isComplete && isComplete?.superMemoItem.efactor > 2.5;
 
-          console.log("isComplete", isComplete);
           return (
             <TouchableOpacity onPress={() => handleStudyOneQuestion(item.slug)}>
               <View
                 style={cn(
-                  "flex flex-row justify-between bg-background-secondary pl-2 pr-4 py-4 rounded-lg"
+                  "flex flex-row justify-between items-start gap-4 bg-background-secondary pl-2 pr-4 py-4 rounded-lg"
                 )}
               >
-                <View style={cn("flex flex-row justify-start gap-2")}>
+                {/* style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    flexShrink: 1,
+                  }} */}
+                <View style={cn("flex flex-row justify-start gap-2 flex-1")}>
                   <FontAwesome5
                     name={didWell ? "check-circle" : "redo-alt"}
-                    size={20}
+                    size={didWell ? 20 : 16}
                     color={didWell ? "teal" : "orange"}
                     style={cn(isComplete ? "block" : "opacity-0")}
                   />
 
-                  <MyText className="text-foreground-primary font-bold">
+                  <MyText className="text-foreground-primary font-semibold flex-1">
                     {item.title}
                   </MyText>
                 </View>

@@ -142,6 +142,7 @@ const HomeStackScreen = () => {
             backgroundColor: backgroundPrimary,
           },
           headerBackVisible: true,
+          title: "Study",
         }}
       />
 

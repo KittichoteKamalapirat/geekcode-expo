@@ -169,9 +169,9 @@ module.exports = {
           DEFAULT: "#FFF1CF",
         },
         background: {
-          primary: colorNeutral950,
-          secondary: colorNeutral900,
-          tertiary: colorNeutral800,
+          primary: colorNeutral900,
+          secondary: colorNeutral950,
+          tertiary: colorNeutral700,
         },
         foreground: {
           primary: colorNeutral200,

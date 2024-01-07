@@ -45,7 +45,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={cn`h-full bg-background-primary flex`}>
       <ViewWithFooter
-        className="h-full bg-black"
+        className="h-full"
         footer={
           <View
             style={cn("flex flex-row items-center gap-4 mx-auto mt-4 mx-4")}
@@ -60,7 +60,7 @@ const HomeScreen = () => {
       >
         <View style={cn("mt-4")}>
           <MyText className="text-white text-center text-xl">
-            Practice DSA everyday
+            Practice DSA everyday 🔥
           </MyText>
         </View>
 

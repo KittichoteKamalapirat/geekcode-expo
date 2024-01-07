@@ -18,8 +18,8 @@ const colorNeutral800 = "#262626";
 const colorNeutral900 = "#171717";
 const colorNeutral950 = "#0a0a0a";
 
-export const backgroundPrimary = colorNeutral950;
-export const backgroundSecondary = colorNeutral900;
+export const backgroundPrimary = colorNeutral900;
+export const backgroundSecondary = colorNeutral950;
 export const backgroundTertiary = colorNeutral800;
 
 export const foregroundPrimary = colorNeutral200;

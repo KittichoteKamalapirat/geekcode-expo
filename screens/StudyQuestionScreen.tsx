@@ -97,7 +97,12 @@ const StudyQuestionScreen = () => {
   const { height } = Dimensions.get("window");
   const [step, setStep] = useState(0);
 
-  const lesson = lessons.find((lesson) => lesson.overview.slug === lessonSlug);
+  const lesson = lessons.find((l) => {
+    return l.overview.slug === lessonSlug;
+  });
+
+  console.log("lessonSlug", lessonSlug);
+  console.log("lesson", lesson);
 
   const flashcard: SuperMemoItem = {
     interval: 0,
@@ -181,6 +186,7 @@ const StudyQuestionScreen = () => {
       <FlatList
         style={{
           height: height * 1,
+          // flexWrap: "wrap",
         }}
         // onViewableItemsChanged={handleViewableItemsChanged}
         // viewabilityConfig={{
@@ -210,7 +216,7 @@ const StudyQuestionScreen = () => {
         )}
         keyExtractor={(item, index) => String(index)}
         ref={flatListRef}
-        renderItem={({ item, index }) => {
+        renderItem={({ item }) => {
           return (
             <MyView>
               <MyModal
@@ -222,10 +228,7 @@ const StudyQuestionScreen = () => {
                 </MyText>
                 <MyText className="mt-4">{lesson.description}</MyText>
               </MyModal>
-              <FlashCard
-                front={`${index + 1}.${item.question}`}
-                back={item.answer}
-              />
+              <FlashCard front={item.question} back={item.answer} />
             </MyView>
           );
         }}
