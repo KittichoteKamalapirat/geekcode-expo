@@ -9,7 +9,7 @@ export type Lesson = {
   drills: Drill[];
 };
 
-export type Level = "easy" | "medium" | "hard";
+export type Level = 0 | 1 | 2;
 
 export type LessonOverview = {
   slug: string;
@@ -21,22 +21,22 @@ export const lessonOverviews: LessonOverview[] = [
   {
     slug: "two_sum",
     title: "Two Sum",
-    level: "easy",
+    level: 0,
   },
   {
     slug: "contains_duplicate",
     title: "Contains Duplicate",
-    level: "easy",
+    level: 0,
   },
   {
     slug: "valid_sudoku",
     title: "Valid Sudoku",
-    level: "medium",
+    level: 1,
   },
   {
     slug: "minimum_window_substring",
     title: "Minimum Window Substring",
-    level: "hard",
+    level: 2,
   },
 ];
 
@@ -46,6 +46,16 @@ export const lessons: Lesson[] = [
       (overview) => overview.slug === "two_sum"
     ) as LessonOverview,
     description: `Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+      You may assume that each input would have exactly one solution, and you may not use the same element twice.
+      You may assume that each input would have exactly one solution, and you may not use the same element twice.
+      You may assume that each input would have exactly one solution, and you may not use the same element twice.
+      You may assume that each input would have exactly one solution, and you may not use the same element twice.
+      You may assume that each input would have exactly one solution, and you may not use the same element twice.
+      You may assume that each input would have exactly one solution, and you may not use the same element twice.
+      You may assume that each input would have exactly one solution, and you may not use the same element twice.
+      You may assume that each input would have exactly one solution, and you may not use the same element twice.
+      You may assume that each input would have exactly one solution, and you may not use the same element twice.
+      You may assume that each input would have exactly one solution, and you may not use the same element twice.
       You may assume that each input would have exactly one solution, and you may not use the same element twice.
       You can return the answer in any order.
       Example 1:

@@ -1,6 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
 
-import { Ionicons } from "@expo/vector-icons";
 import {
   Dimensions,
   FlatList,
@@ -19,11 +18,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SuperMemoGrade, SuperMemoItem } from "supermemo";
-import BottomModal from "../components/BottomModal";
 import FlashCard from "../components/FlashCard/FlashCard";
-import OneSideCardWithParent from "../components/FlashCard/OneSideCardWithParent";
+import FooterCard from "../components/FlashCard/FooterCard";
 import Loader from "../components/Loader";
+import MyModal from "../components/Modal";
 import MyText from "../components/MyTexts/MyText";
+import MyView from "../components/MyView";
 import ProgressBar from "../components/ProgressBar";
 import { FLASHCARD_MARGIN } from "../constants";
 import { Drill, lessons } from "../constants/lessons.db";
@@ -31,10 +31,7 @@ import { useStore } from "../lib/store";
 import { cn } from "../lib/tailwind";
 import { practiceSr } from "../util/spaceRep";
 import { useIsFirstLaunch } from "../util/useIsFirstLaunch";
-import BottomSheet, { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { EventProvider } from "react-native-outside-press";
-import MyModal from "../components/Modal";
-import MyView from "../components/MyView";
+import HeaderCard from "../components/FlashCard/HeaderCard";
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Lesson">;
 
@@ -161,14 +158,17 @@ const StudyQuestionScreen = () => {
   }, [lesson]);
 
   return (
-    <SafeAreaView style={cn("bg-neutral-900")}>
-      <AntDesign
-        name="questioncircleo"
-        size={24}
-        color="white"
-        onPress={() => setModalVisible(true)}
-        style={cn("absolute top-4 right-4 z-50")}
-      />
+    <SafeAreaView style={cn("bg-background-primary")}>
+      {step !== 0 && (
+        <AntDesign
+          name="questioncircleo"
+          size={20}
+          color="white"
+          onPress={() => setModalVisible(true)}
+          style={cn("absolute top-4 right-4 z-50")}
+        />
+      )}
+
       {isDrill && (
         <ProgressBar
           step={step}
@@ -230,18 +230,14 @@ const StudyQuestionScreen = () => {
           );
         }}
         ListHeaderComponent={() => (
-          <OneSideCardWithParent hasPaddingRight>
+          <HeaderCard title={lesson.overview.title}>
             <View style={cn("flex flex-col-reverse")}>
               <MyText>{lesson.description}</MyText>
             </View>
-          </OneSideCardWithParent>
+          </HeaderCard>
         )}
         ListFooterComponent={() => (
-          <OneSideCardWithParent
-            hasPaddingLeft
-            isHeader={false}
-            isFirstLaunch={isFirstLaunch}
-          >
+          <FooterCard>
             <View style={cn("flex flex-col-reverse gap-2")}>
               {grades.map((grade) => (
                 <TouchableOpacity
@@ -249,7 +245,7 @@ const StudyQuestionScreen = () => {
                     handlePractice(lesson.overview.slug, grade.score)
                   }
                 >
-                  <View style={cn("bg-neutral-800 rounded-md p-4")}>
+                  <View style={cn("bg-background-secondary rounded-md p-4")}>
                     <MyText className="text-center">
                       {grade.emoji} {grade.text}
                     </MyText>
@@ -257,7 +253,7 @@ const StudyQuestionScreen = () => {
                 </TouchableOpacity>
               ))}
             </View>
-          </OneSideCardWithParent>
+          </FooterCard>
         )}
       />
     </SafeAreaView>

@@ -2,6 +2,7 @@ import React from "react";
 import { Dimensions, TouchableOpacity, View } from "react-native";
 import { FLASHCARD_MARGIN } from "../../constants";
 import MyText from "../MyTexts/MyText";
+import { backgroundPrimary, backgroundSecondary } from "../../theme/style";
 
 type Props = {
   title: string;
@@ -23,7 +24,7 @@ const OneSideCard: React.FC<Props> = ({ title, onPress }) => {
           justifyContent: "center",
           display: "flex",
           flexDirection: "column",
-          backgroundColor: "black",
+          backgroundColor: backgroundSecondary,
           borderRadius: 12,
           marginBottom: 35,
         }}

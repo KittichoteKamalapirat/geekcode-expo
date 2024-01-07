@@ -118,7 +118,7 @@ const AppWithoutApollo = () => {
     <View>
       <View onLayout={onLayoutRootView}></View>
 
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
 
       <Toast />
     </View>

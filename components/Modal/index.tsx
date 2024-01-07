@@ -2,7 +2,7 @@ import { AntDesign } from "@expo/vector-icons";
 import React, { ReactNode } from "react";
 import { Alert, Modal, ScrollView, StyleSheet, View } from "react-native";
 import { cn } from "../../lib/tailwind";
-import { grey900 } from "../../theme/style";
+import { backgroundSecondary } from "../../theme/style";
 
 interface Props {
   children: ReactNode;
@@ -39,7 +39,7 @@ const MyModal = ({ modalVisible, setModalVisible, children }: Props) => {
               style={{
                 margin: 12,
                 //   height: "60%",
-                backgroundColor: grey900,
+                backgroundColor: backgroundSecondary,
                 borderRadius: 16,
                 padding: 16,
                 elevation: 5,
@@ -47,7 +47,6 @@ const MyModal = ({ modalVisible, setModalVisible, children }: Props) => {
                 borderWidth: 0.5,
               }}
               contentContainerStyle={{
-                backgroundColor: grey900,
                 paddingBottom: 48,
 
                 alignItems: "flex-end",
@@ -70,20 +69,6 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "rgba(0, 0, 0, 0.9)", // overlay
     position: "absolute",
-  },
-
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
-  },
-
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
   },
 });
 

@@ -8,7 +8,11 @@ import { HomeScreen, LoginScreen, RegisterScreen } from "../screens";
 
 import ProfileScreen from "../screens/ProfileScreen";
 import StudyQuestionScreen from "../screens/StudyQuestionScreen";
-import { headerBgColor, headerTextColor } from "../theme/style";
+import {
+  backgroundPrimary,
+  headerBgColor,
+  headerTextColor,
+} from "../theme/style";
 import { ObjectValues } from "../types";
 import { useIsFirstLaunch } from "../util/useIsFirstLaunch";
 
@@ -85,7 +89,7 @@ const HomeStackScreen = () => {
           headerTintColor: "white",
           headerBackVisible: false,
           headerStyle: {
-            backgroundColor: "black",
+            backgroundColor: backgroundPrimary,
             // shadowColor: "transparent",
             // opacity: 0,
           },
@@ -135,7 +139,7 @@ const HomeStackScreen = () => {
           headerTintColor: "white",
           headerShadowVisible: false, // hide the bottom border
           headerStyle: {
-            backgroundColor: "black",
+            backgroundColor: backgroundPrimary,
           },
           headerBackVisible: true,
         }}

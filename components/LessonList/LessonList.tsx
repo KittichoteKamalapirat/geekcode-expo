@@ -13,10 +13,16 @@ import { Level, lessonOverviews } from "../../constants/lessons.db";
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Register">;
 
+const levelToLabel: Record<Level, string> = {
+  0: "Easy",
+  1: "Medium",
+  2: "Hard",
+} as const;
+
 const levelColors: Record<Level, string> = {
-  easy: "bg-teal-50 text-teal-600",
-  medium: "bg-amber-50 text-amber-600",
-  hard: "bg-rose-50 text-rose-500",
+  0: "bg-teal-50 text-teal-600",
+  1: "bg-amber-50 text-amber-600",
+  2: "bg-rose-50 text-rose-500",
 };
 
 const LessonList = () => {
@@ -42,21 +48,26 @@ const LessonList = () => {
         ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         ListFooterComponent={<View style={{ height: 20 }} />} // so the last item displayed fully
         renderItem={({ item }) => {
-          const isComplete = history.some((his) => his.slug === item.slug);
+          const isComplete = history.find((his) => his.slug === item.slug);
+          const didWell = isComplete && isComplete?.superMemoItem.efactor > 2.5;
+
           console.log("isComplete", isComplete);
           return (
             <TouchableOpacity onPress={() => handleStudyOneQuestion(item.slug)}>
               <View
                 style={cn(
-                  "flex flex-row justify-between bg-neutral-800 pl-2 pr-4 py-4 rounded-lg"
+                  "flex flex-row justify-between bg-background-secondary pl-2 pr-4 py-4 rounded-lg"
                 )}
               >
                 <View style={cn("flex flex-row justify-start gap-2")}>
-                  {isComplete && (
-                    <FontAwesome5 name="check-circle" size={24} color="teal" />
-                  )}
+                  <FontAwesome5
+                    name={didWell ? "check-circle" : "redo-alt"}
+                    size={20}
+                    color={didWell ? "teal" : "orange"}
+                    style={cn(isComplete ? "block" : "opacity-0")}
+                  />
 
-                  <MyText className="text-foreground font-bold">
+                  <MyText className="text-foreground-primary font-bold">
                     {item.title}
                   </MyText>
                 </View>
@@ -73,7 +84,7 @@ const LessonList = () => {
                       "text-xs font-semibold"
                     )}
                   >
-                    {item.level}
+                    {levelToLabel[item.level]}
                   </MyText>
                 </View>
               </View>

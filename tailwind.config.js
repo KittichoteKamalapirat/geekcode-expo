@@ -4,6 +4,18 @@ const red = "#BC002D";
 
 const primaryColor = "#FA947B";
 
+const colorNeutral50 = "#fafafa";
+const colorNeutral100 = "#f5f5f5";
+const colorNeutral200 = "#e5e5e5";
+const colorNeutral300 = "#d4d4d4";
+const colorNeutral400 = "#a3a3a3";
+const colorNeutral500 = "#737373";
+const colorNeutral600 = "#525252";
+const colorNeutral700 = "#404040";
+const colorNeutral800 = "#262626";
+const colorNeutral900 = "#171717";
+const colorNeutral950 = "#0a0a0a";
+
 const primaryHoveredColor = "#FCBFB0";
 
 const secondaryColor = "#236D7D";
@@ -156,8 +168,15 @@ module.exports = {
         cream: {
           DEFAULT: "#FFF1CF",
         },
+        background: {
+          primary: colorNeutral950,
+          secondary: colorNeutral900,
+          tertiary: colorNeutral800,
+        },
         foreground: {
-          DEFAULT: "white",
+          primary: colorNeutral200,
+          secondary: colorNeutral300,
+          tertiary: colorNeutral400,
         },
         grey: {
           0: grey0,

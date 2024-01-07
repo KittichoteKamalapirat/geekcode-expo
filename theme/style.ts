@@ -5,6 +5,27 @@
 // 1. when tailwind can't be used such as in icon, styledComponent
 // 2. can be used in tailwind config as well
 
+// tokens
+const colorNeutral50 = "#fafafa";
+const colorNeutral100 = "#f5f5f5";
+const colorNeutral200 = "#e5e5e5";
+const colorNeutral300 = "#d4d4d4";
+const colorNeutral400 = "#a3a3a3";
+const colorNeutral500 = "#737373";
+const colorNeutral600 = "#525252";
+const colorNeutral700 = "#404040";
+const colorNeutral800 = "#262626";
+const colorNeutral900 = "#171717";
+const colorNeutral950 = "#0a0a0a";
+
+export const backgroundPrimary = colorNeutral950;
+export const backgroundSecondary = colorNeutral900;
+export const backgroundTertiary = colorNeutral800;
+
+export const foregroundPrimary = colorNeutral200;
+export const foregroundSecondary = colorNeutral300;
+export const foregroundTertiary = colorNeutral400;
+
 export const green = "#34d399";
 export const blue = "#4E97F3";
 export const red = "#BC002D";
