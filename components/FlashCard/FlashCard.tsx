@@ -65,7 +65,7 @@ const FlashCard = ({ front, back }: Props) => {
         marginVertical: 20,
       }}
     >
-      <View style={cn("xxxxx")}>
+      <View style={cn("")}>
         <Animated.View style={[styles.hidden, rotateFront]}>
           <OneSideCard title={front} onPress={doAFlip} />
         </Animated.View>

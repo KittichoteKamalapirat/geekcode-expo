@@ -4,6 +4,9 @@ const red = "#BC002D";
 
 const primaryColor = "#FA947B";
 
+const colorTeal700 = "#0f766e";
+const accentPrimary = colorTeal700;
+
 const colorNeutral50 = "#fafafa";
 const colorNeutral100 = "#f5f5f5";
 const colorNeutral200 = "#e5e5e5";
@@ -175,6 +178,11 @@ module.exports = {
         },
         foreground: {
           primary: colorNeutral200,
+          secondary: colorNeutral300,
+          tertiary: colorNeutral400,
+        },
+        accent: {
+          primary: accentPrimary,
           secondary: colorNeutral300,
           tertiary: colorNeutral400,
         },

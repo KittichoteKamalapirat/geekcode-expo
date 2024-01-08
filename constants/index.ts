@@ -23,3 +23,5 @@ export const PAUSE_LABEL = "pause";
 export const ICON_SIZE = 24;
 
 export const FLASHCARD_MARGIN = 20;
+
+export const DAILY_GOAL_KEY_DATE_FORMAT = "YYYY-MM-DD";

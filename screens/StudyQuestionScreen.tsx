@@ -25,7 +25,7 @@ import MyModal from "../components/Modal";
 import MyText from "../components/MyTexts/MyText";
 import MyView from "../components/MyView";
 import ProgressBar from "../components/ProgressBar";
-import { FLASHCARD_MARGIN } from "../constants";
+import { DAILY_GOAL_KEY_DATE_FORMAT, FLASHCARD_MARGIN } from "../constants";
 import { Drill, lessons } from "../constants/lessons.db";
 import { useStore } from "../lib/store";
 import { cn } from "../lib/tailwind";
@@ -34,9 +34,14 @@ import { useIsFirstLaunch } from "../util/useIsFirstLaunch";
 import HeaderCard from "../components/FlashCard/HeaderCard";
 import { LocalStorage } from "../lib/localStorage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import dayjs from "dayjs";
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Lesson">;
 
+export interface Mark {
+  slug: string;
+  grade: number;
+}
 interface GradeDisplay {
   score: SuperMemoGrade;
   emoji: string;
@@ -100,11 +105,8 @@ const StudyQuestionScreen = () => {
   const [step, setStep] = useState(0);
 
   const lesson = lessons.find((l) => {
-    return l.overview.slug === lessonSlug;
+    return l.overview?.slug === lessonSlug;
   });
-
-  console.log("lessonSlug", lessonSlug);
-  console.log("lesson", lesson);
 
   const flashcard: SuperMemoItem = {
     interval: 0,
@@ -114,7 +116,7 @@ const StudyQuestionScreen = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handlePractice = (slug: string, grade: SuperMemoGrade) => {
+  const handlePractice = async (slug: string, grade: SuperMemoGrade) => {
     // 1. update history
     // 2. pop the item from questions list
     const { superMemoItem, isoDueDate } = practiceSr(flashcard, grade);
@@ -122,20 +124,41 @@ const StudyQuestionScreen = () => {
     const index = history.findIndex(
       (item) => item.slug === lesson?.overview.slug
     );
-    const copy = [...history];
+    const newHistory = [...history];
     const newItem = {
       slug: slug,
       superMemoItem,
       isoDueDate,
     };
     if (index !== -1) {
-      copy[index] = newItem;
+      newHistory[index] = newItem;
     } else {
-      copy.push(newItem);
+      newHistory.push(newItem);
     }
     const newQuestions = [...questions];
     newQuestions.shift(); // remove first item
-    setStudy({ history: copy, questions: newQuestions });
+    setStudy({ history: newHistory, questions: newQuestions });
+    // update localstorage history
+
+    await AsyncStorage.setItem(
+      LocalStorage.studyHistory,
+      JSON.stringify(newHistory)
+    );
+    // update localstorage history ends
+
+    // mark daily questions
+    const today = dayjs().format(DAILY_GOAL_KEY_DATE_FORMAT);
+    const dailyGoalStr = await AsyncStorage.getItem(today);
+
+    // not first question
+    if (!dailyGoalStr) return;
+    const dailyGoal = JSON.parse(dailyGoalStr) as Mark[];
+    const matchIndex = dailyGoal.findIndex((d) => d.slug === slug);
+    dailyGoal[matchIndex].grade = grade;
+
+    AsyncStorage.setItem(today, JSON.stringify(dailyGoal));
+    // mark daily questions done
+
     if (newQuestions.length === 0) {
       navigate("Home");
     } else {
@@ -144,6 +167,11 @@ const StudyQuestionScreen = () => {
   };
 
   const snapPoints = useMemo(() => ["25%", "50%", "70%"], []);
+
+  useEffect(() => {
+    if (!lesson) return;
+    setOptions({ title: lesson.overview.title });
+  }, [lesson]);
 
   if (questions.length === 0) navigate("Home");
   if (!lesson) return <Loader />;
@@ -161,9 +189,6 @@ const StudyQuestionScreen = () => {
     }
     setStep(currentStep);
   };
-  useEffect(() => {
-    setOptions({ title: lesson.overview.title });
-  }, [lesson]);
 
   return (
     <SafeAreaView style={cn("bg-background-primary")}>

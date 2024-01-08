@@ -11,7 +11,7 @@ type PropsWithSet<Props = Record<string, any>> = Props & {
   set: IStoreSet<Props>;
 };
 
-interface StudyHistory {
+export interface StudyHistory {
   slug: string;
   superMemoItem: SuperMemoItem;
   isoDueDate: string;

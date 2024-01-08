@@ -9,7 +9,7 @@ import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
 import { LocalStorage } from "./lib/localStorage";
-import { useStore } from "./lib/store";
+import { StudyHistory, useStore } from "./lib/store";
 import { HomeStackParamList } from "./navigations/HomeStackScreen";
 import { useIsFirstLaunch } from "./util/useIsFirstLaunch";
 // import { clearAsyncStorage } from "./util/clearAsyncStorage";
@@ -32,7 +32,7 @@ const AppWithoutApollo = () => {
     countryCode,
   } = useStore((state) => state.user);
 
-  const { set: setAction } = useStore((state) => state.action);
+  const { set: setStudy } = useStore((state) => state.study);
   const signupComplete = Boolean(id && pronoun && countryCode);
 
   // for hiding tab in onboarding screen
@@ -71,8 +71,8 @@ const AppWithoutApollo = () => {
           LocalStorage.userCountryCode
         );
         const pronoun = await AsyncStorage.getItem(LocalStorage.userPronoun);
-        const completedLessons = await AsyncStorage.getItem(
-          LocalStorage.completedLessons
+        const historyStr = await AsyncStorage.getItem(
+          LocalStorage.studyHistory
         );
 
         if (userId) {
@@ -85,10 +85,10 @@ const AppWithoutApollo = () => {
           setUser({ pronoun });
         }
 
-        if (completedLessons) {
-          const lessons = JSON.parse(completedLessons) as string[];
-          if (lessons && lessons?.length > 0) {
-            setAction({ completedLessons: lessons });
+        if (historyStr) {
+          const history = JSON.parse(historyStr) as StudyHistory[];
+          if (history && history?.length > 0) {
+            setStudy({ history });
           }
         }
 

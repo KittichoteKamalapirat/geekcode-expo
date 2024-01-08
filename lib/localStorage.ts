@@ -4,8 +4,10 @@ export const LocalStorage = {
   userId: "userId",
   userCountryCode: "userCountryCode",
   userPronoun: "userPronoun",
-  completedLessons: "completedLessons",
+  // completedLessons: "completedLessons",
+  studyHistory: "studyHistory",
   hasSwipedCard: "hasSwipedCard",
+  dailyGoals: "dailyGoals",
 } as const;
 
 export type LocalStorageKeys = ObjectKeys<typeof LocalStorage>;
