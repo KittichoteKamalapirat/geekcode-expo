@@ -9,17 +9,20 @@ import {
   View,
 } from "react-native";
 
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 import { HomeStackParamList } from "../navigations/HomeStackScreen";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import dayjs from "dayjs";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SuperMemoGrade, SuperMemoItem } from "supermemo";
 import FlashCard from "../components/FlashCard/FlashCard";
 import FooterCard from "../components/FlashCard/FooterCard";
+import HeaderCard from "../components/FlashCard/HeaderCard";
 import Loader from "../components/Loader";
 import MyModal from "../components/Modal";
 import MyText from "../components/MyTexts/MyText";
@@ -27,15 +30,10 @@ import MyView from "../components/MyView";
 import ProgressBar from "../components/ProgressBar";
 import { DAILY_GOAL_KEY_DATE_FORMAT, FLASHCARD_MARGIN } from "../constants";
 import { Drill, lessons } from "../constants/lessons.db";
+import { LocalStorage } from "../lib/localStorage";
 import { useStore } from "../lib/store";
 import { cn } from "../lib/tailwind";
 import { practiceSr } from "../util/spaceRep";
-import { useIsFirstLaunch } from "../util/useIsFirstLaunch";
-import HeaderCard from "../components/FlashCard/HeaderCard";
-import { LocalStorage } from "../lib/localStorage";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import dayjs from "dayjs";
-import { set } from "react-hook-form";
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Lesson">;
 
@@ -83,16 +81,12 @@ const grades: GradeDisplay[] = [
 ];
 const StudyQuestionScreen = () => {
   const { navigate, setOptions } = useNavigation<NavigationProp>();
-  const isFirstLaunch = useIsFirstLaunch();
 
   const [isDrill, setIsDrill] = useState<boolean>(false);
 
   const screenW = Dimensions.get("window").width;
 
   const flatListRef = useRef<FlatList>(null);
-
-  const route: RouteProp<{ params: { sheetTab: string; id: string } }> =
-    useRoute();
 
   const {
     set: setStudy,
@@ -152,27 +146,20 @@ const StudyQuestionScreen = () => {
     const today = dayjs().format(DAILY_GOAL_KEY_DATE_FORMAT);
     const dailyGoalStr = await AsyncStorage.getItem(today);
 
-    console.log("11");
     // not first question
     if (!dailyGoalStr) return;
     const dailyGoal = JSON.parse(dailyGoalStr) as Mark[];
     const matchIndex = dailyGoal.findIndex((d) => d.slug === slug);
     dailyGoal[matchIndex].grade = grade;
 
-    console.log("22");
     await AsyncStorage.setItem(today, JSON.stringify(dailyGoal));
-    console.log("33");
-    // mark daily questions done
 
     if (newQuestions.length === 0) {
-      setStudy({ isCompleteTodayGoal: true });
       navigate("Home");
     } else {
       flatListRef.current?.scrollToOffset({ animated: true, offset: 0 }); // scroll to header
     }
   };
-
-  const snapPoints = useMemo(() => ["25%", "50%", "70%"], []);
 
   useEffect(() => {
     if (!lesson) return;

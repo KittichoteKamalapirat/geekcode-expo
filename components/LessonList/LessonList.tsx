@@ -9,7 +9,7 @@ import MyText from "../MyTexts/MyText";
 import Button from "../Buttons/Button";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { HomeStackParamList } from "../../navigations/HomeStackScreen";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import dayjs from "dayjs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Mark } from "../../screens/StudyQuestionScreen";
@@ -24,6 +24,8 @@ const LessonList = () => {
     history,
     isCompleteTodayGoal,
   } = useStore((state) => state.study);
+  const isFocused = useIsFocused();
+  console.log("isFocused", isFocused);
   const { height } = Dimensions.get("window");
   const [dailyLessons, setDailyLessons] = useState<LessonOverview[]>([]);
   const [dailyMarks, setDailyMarks] = useState<Mark[]>([]);
@@ -51,8 +53,8 @@ const LessonList = () => {
     const overviews = [...sortedToStudyQuestions, ...studiedQuestions];
 
     const easyQuestions = overviews.filter((o) => o.level === 0).slice(0, 1);
-    const mediumQuestions = overviews.filter((o) => o.level === 1).slice(0, 0);
-    const hardQuestions = overviews.filter((o) => o.level === 2).slice(0, 0);
+    const mediumQuestions = overviews.filter((o) => o.level === 1).slice(0, 2);
+    const hardQuestions = overviews.filter((o) => o.level === 2).slice(0, 1);
 
     return [...easyQuestions, ...mediumQuestions, ...hardQuestions];
   };
@@ -123,7 +125,7 @@ const LessonList = () => {
     if (!history) return;
 
     setGoal(history);
-  }, []);
+  }, [isFocused]);
 
   // useEffect(() => {
   //   clearStorage();

@@ -10,11 +10,10 @@ import { EventProvider } from "react-native-outside-press";
 import AppWithoutApollo from "./AppWithoutApollo";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import { apolloClient } from "./lib/apollo";
-import TabNavigator from "./navigations/TabNavigator";
-import { useIsFirstLaunch } from "./util/useIsFirstLaunch";
 import { LocalStorage } from "./lib/localStorage";
 import { StudyHistory, useStore } from "./lib/store";
-import Loader from "./components/Loader";
+import TabNavigator from "./navigations/TabNavigator";
+import { useIsFirstLaunch } from "./util/useIsFirstLaunch";
 
 export default function App() {
   const [routeName, setRouteName] = useState("");
@@ -59,15 +58,10 @@ export default function App() {
     prepare();
   }, [appIsReady]);
 
-  console.log("appIsReady", appIsReady);
-  console.log("history", history);
-
   if (!appIsReady || !history) {
-    console.log("null");
     return null; // Splashscreen is shown
   }
 
-  console.log("ready");
   return (
     <EventProvider>
       <ErrorBoundary>
