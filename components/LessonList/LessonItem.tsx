@@ -38,7 +38,7 @@ const LessonItem = ({ lessonOverview }: Props) => {
     navigate("StudyQuestion");
   };
 
-  const isComplete = history.find((his) => his.slug === lessonOverview.slug);
+  const isComplete = history?.find((his) => his.slug === lessonOverview.slug);
   const didWell = isComplete && isComplete?.superMemoItem.efactor > 2.5;
 
   return (

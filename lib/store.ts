@@ -17,6 +17,9 @@ export interface StudyHistory {
   isoDueDate: string;
 }
 export type IStore = {
+  app: PropsWithSet<{
+    appIsReady: boolean;
+  }>;
   user: PropsWithSet<{
     pronoun: string;
     countryCode: string;
@@ -27,8 +30,9 @@ export type IStore = {
     completedLessons: string[];
   }>;
   study: PropsWithSet<{
-    history: StudyHistory[];
+    history: StudyHistory[] | null;
     questions: string[];
+    isCompleteTodayGoal: boolean;
   }>;
 };
 
@@ -78,6 +82,10 @@ export const useStore = create<IStore>(
     }
 
     const store: IStore = {
+      app: {
+        set: factorySetFunc<IStore["app"]>("app"),
+        appIsReady: false,
+      },
       user: {
         set: factorySetFunc<IStore["user"]>("user"),
         id: "",
@@ -91,8 +99,9 @@ export const useStore = create<IStore>(
       },
       study: {
         set: factorySetFunc<IStore["study"]>("study"),
-        history: [],
+        history: null,
         questions: [],
+        isCompleteTodayGoal: false,
       },
     };
 

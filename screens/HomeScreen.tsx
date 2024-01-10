@@ -1,21 +1,11 @@
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { SafeAreaView, View } from "react-native";
-import Button from "../components/Buttons/Button";
 import LessonList from "../components/LessonList/LessonList";
 import MyText from "../components/MyTexts/MyText";
 import { Container } from "../components/containers/Container";
-import { LessonOverview, lessonOverviews } from "../constants/lessons.db";
-import { useStore } from "../lib/store";
 import { cn } from "../lib/tailwind";
-import { HomeStackParamList } from "../navigations/HomeStackScreen";
-import MyView from "../components/MyView";
-import LessonItem from "../components/LessonList/LessonItem";
 
 const HomeScreen = () => {
-  const { set: setStudy, history } = useStore((state) => state.study);
-
   // const handleStudyManyQuestion = () => {
   //   const sortedHistory = [...history].sort(
   //     (a, b) =>

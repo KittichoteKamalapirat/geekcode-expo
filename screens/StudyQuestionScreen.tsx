@@ -35,6 +35,7 @@ import HeaderCard from "../components/FlashCard/HeaderCard";
 import { LocalStorage } from "../lib/localStorage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjs from "dayjs";
+import { set } from "react-hook-form";
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Lesson">;
 
@@ -117,6 +118,7 @@ const StudyQuestionScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handlePractice = async (slug: string, grade: SuperMemoGrade) => {
+    if (!history) return;
     // 1. update history
     // 2. pop the item from questions list
     const { superMemoItem, isoDueDate } = practiceSr(flashcard, grade);
@@ -150,16 +152,20 @@ const StudyQuestionScreen = () => {
     const today = dayjs().format(DAILY_GOAL_KEY_DATE_FORMAT);
     const dailyGoalStr = await AsyncStorage.getItem(today);
 
+    console.log("11");
     // not first question
     if (!dailyGoalStr) return;
     const dailyGoal = JSON.parse(dailyGoalStr) as Mark[];
     const matchIndex = dailyGoal.findIndex((d) => d.slug === slug);
     dailyGoal[matchIndex].grade = grade;
 
-    AsyncStorage.setItem(today, JSON.stringify(dailyGoal));
+    console.log("22");
+    await AsyncStorage.setItem(today, JSON.stringify(dailyGoal));
+    console.log("33");
     // mark daily questions done
 
     if (newQuestions.length === 0) {
+      setStudy({ isCompleteTodayGoal: true });
       navigate("Home");
     } else {
       flatListRef.current?.scrollToOffset({ animated: true, offset: 0 }); // scroll to header
@@ -173,7 +179,7 @@ const StudyQuestionScreen = () => {
     setOptions({ title: lesson.overview.title });
   }, [lesson]);
 
-  if (questions.length === 0) navigate("Home");
+  // if (questions.length === 0) navigate("Home"); // redirect in handlePractice
   if (!lesson) return <Loader />;
 
   const questionsNum = lesson.drills.length;
@@ -271,8 +277,8 @@ const StudyQuestionScreen = () => {
             <View style={cn("flex flex-col-reverse gap-2")}>
               {grades.map((grade) => (
                 <TouchableOpacity
-                  onPress={() =>
-                    handlePractice(lesson.overview.slug, grade.score)
+                  onPress={async () =>
+                    await handlePractice(lesson.overview.slug, grade.score)
                   }
                 >
                   <View style={cn("bg-background-secondary rounded-md p-4")}>

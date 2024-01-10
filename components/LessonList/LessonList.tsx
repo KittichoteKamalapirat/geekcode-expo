@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Dimensions, FlatList, View } from "react-native";
-import { useStore } from "../../lib/store";
+import { StudyHistory, useStore } from "../../lib/store";
 import { LessonOverview, lessonOverviews } from "../../constants/lessons.db";
 import { cn } from "../../lib/tailwind";
 import LessonItem from "./LessonItem";
@@ -14,19 +14,23 @@ import dayjs from "dayjs";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Mark } from "../../screens/StudyQuestionScreen";
 import { DAILY_GOAL_KEY_DATE_FORMAT } from "../../constants";
+import { LocalStorage } from "../../lib/localStorage";
 
 type NavigationProp = NativeStackNavigationProp<HomeStackParamList, "Home">;
 
 const LessonList = () => {
-  const { set: setStudy, history } = useStore((state) => state.study);
+  const {
+    set: setStudy,
+    history,
+    isCompleteTodayGoal,
+  } = useStore((state) => state.study);
   const { height } = Dimensions.get("window");
   const [dailyLessons, setDailyLessons] = useState<LessonOverview[]>([]);
   const [dailyMarks, setDailyMarks] = useState<Mark[]>([]);
-  const [isCompleteTodayGoal, setIsCompleteTodayGoal] =
-    useState<boolean>(false);
+
   const { navigate } = useNavigation<NavigationProp>();
 
-  const getTodayLessons = () => {
+  const getTodayLessons = (history: StudyHistory[]) => {
     const sortedHistory = [...history].sort(
       (a, b) =>
         new Date(a.isoDueDate).valueOf() - new Date(b.isoDueDate).valueOf() ||
@@ -47,8 +51,8 @@ const LessonList = () => {
     const overviews = [...sortedToStudyQuestions, ...studiedQuestions];
 
     const easyQuestions = overviews.filter((o) => o.level === 0).slice(0, 1);
-    const mediumQuestions = overviews.filter((o) => o.level === 1).slice(0, 2);
-    const hardQuestions = overviews.filter((o) => o.level === 2).slice(0, 1);
+    const mediumQuestions = overviews.filter((o) => o.level === 1).slice(0, 0);
+    const hardQuestions = overviews.filter((o) => o.level === 2).slice(0, 0);
 
     return [...easyQuestions, ...mediumQuestions, ...hardQuestions];
   };
@@ -70,13 +74,14 @@ const LessonList = () => {
     const today = dayjs().format(DAILY_GOAL_KEY_DATE_FORMAT);
 
     await AsyncStorage.setItem(today, "");
+    await AsyncStorage.setItem(LocalStorage.studyHistory, "");
+    await AsyncStorage.setItem(LocalStorage.dailyGoals, "");
     const test = await AsyncStorage.getItem(today);
   };
   // set today's goal
   useEffect(() => {
-    const todayLessons = getTodayLessons();
-
-    const setGoal = async () => {
+    const setGoal = async (history: StudyHistory[]) => {
+      const todayLessons = getTodayLessons(history);
       const today = dayjs().format(DAILY_GOAL_KEY_DATE_FORMAT);
 
       const dailyGoalStr = await AsyncStorage.getItem(today);
@@ -86,8 +91,8 @@ const LessonList = () => {
         const questions: Mark[] = JSON.parse(dailyGoalStr) as Mark[];
         setDailyMarks(questions);
 
-        if (questions.every((q) => q.grade > -1)) {
-          setIsCompleteTodayGoal(true);
+        if (!questions || questions.every((q) => q.grade > -1)) {
+          setStudy({ isCompleteTodayGoal: true });
           return;
         }
 
@@ -115,9 +120,14 @@ const LessonList = () => {
       if (dailyLessons) setDailyLessons(dailyLessons);
     };
 
-    setGoal();
+    if (!history) return;
+
+    setGoal(history);
   }, []);
 
+  // useEffect(() => {
+  //   clearStorage();
+  // }, []);
   return (
     <View style={{ height: height * 0.8 }}>
       <FlatList
